@@ -1,0 +1,28 @@
+{
+    "name": "webandco/neos-gulp",
+    "type": "neos-build",
+    "description": "Gulp support for Neos projects",
+    "keywords": ["flow", "neos", "gulp"],
+    "homepage": "http://webandco.com",
+    "license": "GPL-3.0+",
+    "authors": [
+        {
+            "name": "Markus Pfeifenberger",
+            "email": "markus@webandco.com",
+            "homepage": "http://webandco.com",
+            "role": "Developer"
+        },
+        {
+            "name": "David Spiola",
+            "email": "david@webandco.com",
+            "homepage": "http://webandco.com",
+            "role": "Developer"
+        }
+    ],    
+    "require": {
+        "neos/composer-plugin": "^1.0.6|^2.0.0"
+    },    
+    "extra": {
+        "installer-name": "Gulp"
+    }
+}
