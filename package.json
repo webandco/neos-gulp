@@ -1,0 +1,38 @@
+{
+  "name": "webandco-neos-gulp",
+  "version": "1.0.0",
+  "description": "A package to support gulp for neos project",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://webandco.githost.io/webandco/neos-gulp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "browser-sync": "^2.23.6",
+    "fs": "^0.0.1-security",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^4.1.0",
+    "gulp-cached": "^1.1.1",
+    "gulp-clean-css": "^3.9.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-connect": "^5.2.0",
+    "gulp-group-css-media-queries": "^1.2.0",
+    "gulp-plumber": "^1.2.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.6.1",
+    "gulp-sass": "^3.1.0",
+    "gulp-scss-lint": "^0.6.0",
+    "gulp-scss-lint-stylish": "^1.0.1",
+    "gulp-strip-css-comments": "^2.0.0",
+    "gulp-task-graph-visualizer": "^1.0.0",
+    "js-yaml": "^3.10.0",
+    "path": "^0.12.7",
+    "readdir": "^0.0.13"
+  }
+}
