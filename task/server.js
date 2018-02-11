@@ -1,11 +1,7 @@
 'use strict';
 
-var path = require('path'),
-    task = path.basename(__filename, '.js'),
-    taskGroups = require('./task-groups');
-
 module.exports = function (opts) {
-    taskGroups(opts.groupedTasks, task, opts.config.taskPostfix);
+    taskGroups(opts.groupedTasks, 'server', opts.config.taskPostfix);
 
     opts.gulp.task('server' + opts.config.taskPostfix, ['watch' + opts.config.taskPostfix, /* ,'browser-sync'*/], function () {
         if (opts.config.server) {
@@ -30,7 +26,7 @@ module.exports = function (opts) {
                 opts.gulp.watch(opts.config.server.browserSync.reload).on('change', opts.browserSync.reload);
             }
         } else {
-            console.log('server config does not exist for task ' + task);
+            console.log('server config does not exist for task server');
         }
     });
 };

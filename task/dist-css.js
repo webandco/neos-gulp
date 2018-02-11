@@ -1,22 +1,7 @@
 'use strict';
 
-var // autoprefixer = require('gulp-autoprefixer'),
-	cleanCSS = require('gulp-clean-css'),
-	concat = require('gulp-concat'),
-	// connect = require('gulp-connect'),
-	gcmq = require('gulp-group-css-media-queries'),
-	path = require('path'),
-	// plumber = require('gulp-plumber'),
-	rename = require('gulp-rename'),
-	replace = require('gulp-replace'),
-	sass = require('gulp-sass'),
-	stripCssComments = require('gulp-strip-css-comments'),
-	sourceMaps = require('gulp-sourcemaps'),
-    task = path.basename(__filename, '.js'),
-    taskGroups = require('./task-groups');
-
 module.exports = function (opts) {
-    taskGroups(opts.groupedTasks, task, opts.config.taskPostfix);
+    taskGroups(opts.groupedTasks, 'dist-css', opts.config.taskPostfix);
 
     opts.gulp.task('dist-css' + opts.config.taskPostfix, ['sass' + opts.config.taskPostfix], function () {
         // CSS

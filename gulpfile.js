@@ -1,7 +1,12 @@
-var gulp = require('gulp'),
-    fs = require('fs'),
-    readDir = require('readdir'),
-    yaml = require('js-yaml');
+"use strict";
+
+// var gulp = require('gulp'),
+//     fs = require('fs'),
+//     readDir = require('readdir'),
+//     yaml = require('js-yaml');
+
+require("./global");
+
 
 var themePath = '../../Packages/Theme/';
 
@@ -20,7 +25,7 @@ var localTopLevelDomain = 'test';
 
 
 function readYaml(path) {
-    console.log(path);
+    // console.log(path);
     return yaml.safeLoad(fs.readFileSync(path));
 }
 
@@ -39,7 +44,7 @@ themes.forEach(function (theme) {
     config.projectName = projectName;
     config.taskPostfix = '-' + projectName.toLowerCase();
 
-    console.log(config);
+    // console.log(config);
 
 
     // var config = {
@@ -99,8 +104,8 @@ themes.forEach(function (theme) {
     var projectDistTasks = [
         // 'dist-copy' + config.taskPostfix,
         'dist-css' + config.taskPostfix,
-        'lint-js' + config.taskPostfix,
-        // 'dist-js' + config.taskPostfix,
+        // 'lint-js' + config.taskPostfix,
+        'dist-js' + config.taskPostfix,
         // 'favicon' + config.taskPostfix,
     ];
 
@@ -111,8 +116,20 @@ themes.forEach(function (theme) {
     require('./task/dist-css')({
         browserSync: browserSync[config.projectName],
         config: config,
-        gulp: gulp,
-        groupedTasks: taskGroups
+        groupedTasks: taskGroups,
+        gulp: gulp
+    });
+
+    require('./task/dist-js')({
+        config: config,
+        groupedTasks: taskGroups,
+        gulp: gulp
+    });
+
+    require('./task/lint-js')({
+        config: config,
+        groupedTasks: taskGroups,
+        gulp: gulp
     });
 
     require('./task/lint-scss')({

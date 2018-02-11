@@ -1,17 +1,5 @@
 'use strict';
 
-var autoprefixer = require('gulp-autoprefixer'),
-    // concat = require('gulp-concat'),
-    // gulp = require('gulp'),
-    // path = require('path'),
-    plumber = require('gulp-plumber'),
-    // rename = require('gulp-rename'),
-    sass = require('gulp-sass')
-    // sourcemaps = require('gulp-sourcemaps'),
-    // task = path.basename(__filename, '.js'),
-    // taskGroups = require('./task-groups')
-    ;
-
 module.exports = function (opts) {
     // taskGroups(opts.groupedTasks, task, opts.config.taskPostfix);
 
