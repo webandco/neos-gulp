@@ -1,6 +1,6 @@
 "use strict";
 
-require("./global");
+require("./globals");
 
 var themePath = '../../Packages/Theme/';
 
@@ -17,6 +17,10 @@ directoryContents.forEach(function (path) {
 
 var localTopLevelDomain = 'test';
 
+
+// const TASKS = {
+//
+// }
 
 // function readYaml(path) {
 //     // console.log(path);
@@ -50,19 +54,18 @@ themes.forEach(function (theme) {
 
     browserSync[config.projectName] = require('browser-sync').create(config.projectName);
 
-    require('./task/dist-css')({
+    require('./tasks/dist-css')({
         browserSync: browserSync[config.projectName],
         config: config,
         groupedTasks: taskGroups
     });
 
-    require('./task/dist-js')({
+    require('./tasks/dist-js')({
         config: config,
         groupedTasks: taskGroups
     });
 
-    // todo: config need be be defined
-    require('./task/dist-copy')({
+    require('./tasks/dist-copy')({
         config: config,
         groupedTasks: taskGroups
     });
@@ -100,33 +103,33 @@ themes.forEach(function (theme) {
     //     projectDistTasks.push('dist-penthouse' + config.taskPostfix);
     // }
 
-    require('./task/favicon')({
+    require('./tasks/favicon')({
         config: config,
         groupedTasks: taskGroups
     });
 
-    require('./task/hint-js')({
+    require('./tasks/hint-js')({
         config: config,
         groupedTasks: taskGroups
     });
 
-    require('./task/lint-scss')({
+    require('./tasks/lint-scss')({
         config: config,
         groupedTasks: taskGroups
     });
 
-    require('./task/sass')({
+    require('./tasks/sass')({
         config: config,
         groupedTasks: taskGroups
     });
 
-    require('./task/server')({
+    require('./tasks/server')({
         browserSync: browserSync[config.projectName],
         config: config,
         groupedTasks: taskGroups
     });
 
-    require('./task/watch')({
+    require('./tasks/watch')({
         config: config,
         groupedTasks: taskGroups
     });
@@ -143,5 +146,3 @@ for (var task in taskGroups) {
 gulp.task('viz', require('gulp-task-graph-visualizer')());
 
 gulp.task('test', null);
-
-

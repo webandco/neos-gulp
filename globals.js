@@ -4,6 +4,7 @@ const LIBRARIES = {
     autoprefixer: 'gulp-autoprefixer',
     cleanCSS: 'gulp-clean-css',
     cache: 'gulp-cached',
+    colors: 'ansi-colors',
     concat: 'gulp-concat',
 	// connect: 'gulp-connect',
     fs: 'fs',
@@ -16,7 +17,9 @@ const LIBRARIES = {
     jsHintStylish: 'jshint-stylish',
     lint:'gulp-scss-lint',
     lintStylish: 'gulp-scss-lint-stylish',
-	path: 'path',
+    log: 'fancy-log',
+	notifier: 'node-notifier',
+    path: 'path',
 	plumber: 'gulp-plumber',
     readDir: 'readdir',
     realFavicon: 'gulp-real-favicon',
@@ -27,19 +30,28 @@ const LIBRARIES = {
 	sourceMaps: 'gulp-sourcemaps',
     // taskGroups: './task/task-groups',
     uglify: 'gulp-uglify',
-    yaml: 'js-yaml'
+    yaml: 'js-yaml',
+    // local files
+    handleErrors: './handleErrors'
 };
 
 for (let key in LIBRARIES) {
     global[key] = require(LIBRARIES[key]);
 }
 
-const FUNCTION = require("./function");
+const FUNCTIONS = require("./functions");
 
 // map global functions
-global.readYaml = FUNCTION.readYaml;
-global.addToTaskGroups = FUNCTION.addToTaskGroups;
+global.readYaml = FUNCTIONS.readYaml;
+global.addToTaskGroups = FUNCTIONS.addToTaskGroups;
+global.notifyText = FUNCTIONS.notifyText;
 
 global.browserSync = [];
 global.taskGroups = [];
 global.themes = [];
+
+global.gulpIcons = {
+    error: path.join(__dirname, "assets/gulp-error.png"),
+    warning: path.join(__dirname, "assets/gulp-warning.png"),
+    normal: path.join(__dirname, "assets/gulp.png")
+};

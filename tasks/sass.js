@@ -5,7 +5,7 @@ module.exports = function (opts) {
 
     gulp.task('sass' + opts.config.taskPostfix, /* ['clean-sass' + opts.config.taskPostfix], */ function () {
         return gulp.src(opts.config.paths.source.sass)
-            .pipe(plumber())
+            .pipe(plumber(handleErrors))
             .pipe(sass().on('error', sass.logError))
             .pipe(autoprefixer({
                 browsers: ['last 2 versions'],
