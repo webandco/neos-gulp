@@ -1,7 +1,5 @@
 "use strict";
 
-// const FUNCTIONS = require("./functions");
-
 const LIBRARIES = {
     autoprefixer: 'gulp-autoprefixer',
     cleanCSS: 'gulp-clean-css',
@@ -9,6 +7,7 @@ const LIBRARIES = {
     concat: 'gulp-concat',
 	// connect: 'gulp-connect',
     fs: 'fs',
+    fsExtra: 'fs-extra',
 	gcmq: 'gulp-group-css-media-queries',
     gulp: 'gulp',
     gulpUtil: 'gulp-util',
@@ -18,7 +17,7 @@ const LIBRARIES = {
     lint:'gulp-scss-lint',
     lintStylish: 'gulp-scss-lint-stylish',
 	path: 'path',
-	// plumber: 'gulp-plumber',
+	plumber: 'gulp-plumber',
     readDir: 'readdir',
     realFavicon: 'gulp-real-favicon',
 	rename: 'gulp-rename',
@@ -26,7 +25,7 @@ const LIBRARIES = {
 	sass: 'gulp-sass',
 	stripCssComments: 'gulp-strip-css-comments',
 	sourceMaps: 'gulp-sourcemaps',
-    taskGroups: './task/task-groups',
+    // taskGroups: './task/task-groups',
     uglify: 'gulp-uglify',
     yaml: 'js-yaml'
 };
@@ -34,3 +33,13 @@ const LIBRARIES = {
 for (let key in LIBRARIES) {
     global[key] = require(LIBRARIES[key]);
 }
+
+const FUNCTION = require("./function");
+
+// map global functions
+global.readYaml = FUNCTION.readYaml;
+global.addToTaskGroups = FUNCTION.addToTaskGroups;
+
+global.browserSync = [];
+global.taskGroups = [];
+global.themes = [];

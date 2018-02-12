@@ -1,9 +1,9 @@
 'use strict';
 
 module.exports = function (opts) {
-    taskGroups(opts.groupedTasks, 'server', opts.config.taskPostfix);
+    addToTaskGroups(opts.groupedTasks, 'server', opts.config.taskPostfix);
 
-    opts.gulp.task('server' + opts.config.taskPostfix, ['watch' + opts.config.taskPostfix, /* ,'browser-sync'*/], function () {
+    gulp.task('server' + opts.config.taskPostfix, ['watch' + opts.config.taskPostfix, /* ,'browser-sync'*/], function () {
         if (opts.config.server) {
             if (opts.config.server.browserSync) {
                 switch ("string") {
@@ -23,7 +23,7 @@ module.exports = function (opts) {
                         break;
                 }
 
-                opts.gulp.watch(opts.config.server.browserSync.reload).on('change', opts.browserSync.reload);
+                gulp.watch(opts.config.server.browserSync.reload).on('change', opts.browserSync.reload);
             }
         } else {
             console.log('server config does not exist for task server');

@@ -3,10 +3,14 @@
 var maxBufferSize = 1024 * 1000;
 
 module.exports = function (opts) {
-    taskGroups(opts.groupedTasks, 'lint-scss', opts.config.taskPostfix);
+    if (!(opts.config.project.lint && opts.config.project.lint.scss)) {
+        gulpUtil.log(gulpUtil.colors.red('No js files configured for lint - lint-scss'));
+        return false;
+    }
+    addToTaskGroups(opts.groupedTasks, 'lint-scss', opts.config.taskPostfix);
 
-    opts.gulp.task('lint-scss' + opts.config.taskPostfix, function () {
-        return opts.gulp.src(opts.config.project.lint.scss)
+    gulp.task('lint-scss' + opts.config.taskPostfix, function () {
+        return gulp.src(opts.config.project.lint.scss)
             .pipe(cache('scssLint'))
             .pipe(lint(
                 {

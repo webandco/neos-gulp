@@ -1,10 +1,10 @@
 'use strict';
 
 module.exports = function (opts) {
-    // taskGroups(opts.groupedTasks, task, opts.config.taskPostfix);
+    // addToTaskGroups(opts.groupedTasks, task, opts.config.taskPostfix);
 
-    opts.gulp.task('sass' + opts.config.taskPostfix, /* ['clean-sass' + opts.config.taskPostfix], */ function () {
-        return opts.gulp.src(opts.config.paths.source.sass)
+    gulp.task('sass' + opts.config.taskPostfix, /* ['clean-sass' + opts.config.taskPostfix], */ function () {
+        return gulp.src(opts.config.paths.source.sass)
             .pipe(plumber())
             .pipe(sass().on('error', sass.logError))
             .pipe(autoprefixer({
@@ -12,7 +12,7 @@ module.exports = function (opts) {
                 cascade: false
             }))
             // .pipe(rename({suffix: '.min'}))
-            .pipe(opts.gulp.dest(opts.config.paths.build.styles));
+            .pipe(gulp.dest(opts.config.paths.build.styles));
         // stream is done in dist-css
         // .pipe(browserSync.stream());
     });

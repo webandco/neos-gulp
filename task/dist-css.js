@@ -1,17 +1,22 @@
 'use strict';
 
 module.exports = function (opts) {
-    taskGroups(opts.groupedTasks, 'dist-css', opts.config.taskPostfix);
+    if (!opts.config.project.cssFiles) {
+        // gulpUtil.log(gulpUtil.colors.red('No css files configured - dist-css));
+        return false;
+    }
 
-    opts.gulp.task('dist-css' + opts.config.taskPostfix, ['sass' + opts.config.taskPostfix], function () {
+    addToTaskGroups(opts.groupedTasks, 'dist-css', opts.config.taskPostfix);
+
+    gulp.task('dist-css' + opts.config.taskPostfix, ['sass' + opts.config.taskPostfix], function () {
         // CSS
         // console.log('CCS files');
         // console.log(opts.config.project.cssFiles);
 
-        return opts.gulp.src(opts.config.project.cssFiles)
+        return gulp.src(opts.config.project.cssFiles)
             .pipe(concat('webandco.css'))
             .pipe(sourceMaps.init())
-            .pipe(opts.gulp.dest(opts.config.paths.build.styles))
+            .pipe(gulp.dest(opts.config.paths.build.styles))
             // group media queries
             .pipe(gcmq())
             // clean
@@ -35,13 +40,13 @@ module.exports = function (opts) {
                 path.basename = path.basename + '.min';
             }))
             .pipe(sourceMaps.write('./'))
-            // .pipe(opts.gulp.dest(paths.dist.styles)) // needed here for header()
+            // .pipe(gulp.dest(paths.dist.styles)) // needed here for header()
             // .pipe(header(project.banner))
             // replace in the correct sass path with dist relative path
             .pipe(replace("../../../Images", '../Images'))
             .pipe(replace("../../Images", '../Images'))
             // .pipe(replace("../fonts", 'Styles/fonts'))
-            .pipe(opts.gulp.dest(opts.config.paths.dist.styles))
+            .pipe(gulp.dest(opts.config.paths.dist.styles))
             .pipe(opts.browserSync.stream({match: '**/*.css'}));
     });
 };
