@@ -2,21 +2,16 @@
 
 require("./globals");
 
-var themePath = '../../Packages/Theme/';
+let themePath = '../../Packages/Theme/';
 
-// var taskGroups = [];
-// var browserSync = [];
-// var themes = [];
-
-var directoryContents = readDir.readSync(themePath, null, readDir.NON_RECURSIVE + readDir.INCLUDE_DIRECTORIES);
+let directoryContents = readDir.readSync(themePath, null, readDir.NON_RECURSIVE + readDir.INCLUDE_DIRECTORIES);
 directoryContents.forEach(function (path) {
     if (path.substring(path.length - 1) == '/') {
         themes.push(path.substr(0, path.length - 1));
     }
 });
 
-var localTopLevelDomain = 'test';
-
+let localTopLevelDomain = 'test';
 
 const TASKS = [
     "dist-css",
@@ -27,31 +22,25 @@ const TASKS = [
     "lint-scss",
     "sass",
     "server",
-    "watch",
-
+    "watch"
 ];
-
-// function readYaml(path) {
-//     // console.log(path);
-//     return yaml.safeLoad(fs.readFileSync(path));
-// }
 
 // console.log('themes directories');
 // console.log(themes);
 themes.forEach(function (theme) {
-    var themeDir = themePath + theme;
-    var themeName = theme;
+    let themeDir = themePath + theme;
+    let themeName = theme;
 
-    var yamlConfig = readYaml(themeDir + '/Configuration/Gulp.yaml');
-    var yamlString = JSON.stringify(yamlConfig);
-    var yamlString = yamlString.replace(/THEME_PATH/g, themeDir);
-    var yamlString = yamlString.replace(/THEME_NAME/g, themeName);
-    var config = JSON.parse(yamlString).config;
+    let yamlConfig = readYaml(themeDir + '/Configuration/Gulp.yaml');
+    let yamlString = JSON.stringify(yamlConfig);
+    yamlString = yamlString.replace(/THEME_PATH/g, themeDir);
+    yamlString = yamlString.replace(/THEME_NAME/g, themeName);
+    let config = JSON.parse(yamlString).config;
 
     config.projectName = themeName;
     config.taskPostfix = '-' + themeName.toLowerCase().replace(/webco\.(\w+)\.theme/, "$1");
 
-    var projectDistTasks = [
+    let projectDistTasks = [
         'dist-copy' + config.taskPostfix,
         'dist-css' + config.taskPostfix,
         'hint-js' + config.taskPostfix,
@@ -60,7 +49,6 @@ themes.forEach(function (theme) {
     ];
 
     // console.log(config);
-
     browserSync[config.projectName] = require('browser-sync').create(config.projectName);
 
     for (let key in TASKS) {
@@ -81,7 +69,7 @@ themes.forEach(function (theme) {
     //         distTasks: penthouseDistTaskGroups,
     //     });
     //
-    //     for (var distId in config.penthouse.dist) {
+    //     for (let distId in config.penthouse.dist) {
     //         // console.log(penthouseId, config.penthouse.dist[distId]);
     //         require('./task/penthouse-combine')({
     //             config: config,
@@ -91,7 +79,7 @@ themes.forEach(function (theme) {
     //         });
     //     }
     //
-    //     for (var penthouseId in config.penthouse.pages) {
+    //     for (let penthouseId in config.penthouse.pages) {
     //         // console.log(penthouseId, config.penthouse.pages[penthouseId]);
     //         require('./task/penthouse-extract')({
     //             config: config,
@@ -108,7 +96,7 @@ themes.forEach(function (theme) {
 
 // console.log(taskGroups);
 
-for (var task in taskGroups) {
+for (let task in taskGroups) {
     gulp.task(task, taskGroups[task]);
 }
 
