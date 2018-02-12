@@ -18,9 +18,18 @@ directoryContents.forEach(function (path) {
 var localTopLevelDomain = 'test';
 
 
-// const TASKS = {
-//
-// }
+const TASKS = [
+    "dist-css",
+    "dist-js",
+    "dist-copy",
+    "favicon",
+    "hint-js",
+    "lint-scss",
+    "sass",
+    "server",
+    "watch",
+
+];
 
 // function readYaml(path) {
 //     // console.log(path);
@@ -40,12 +49,12 @@ themes.forEach(function (theme) {
     var config = JSON.parse(yamlString).config;
 
     config.projectName = themeName;
-    config.taskPostfix = '-' + themeName.toLowerCase();
+    config.taskPostfix = '-' + themeName.toLowerCase().replace(/webco\.(\w+)\.theme/, "$1");
 
     var projectDistTasks = [
-        // 'dist-copy' + config.taskPostfix,
+        'dist-copy' + config.taskPostfix,
         'dist-css' + config.taskPostfix,
-        // 'hint-js' + config.taskPostfix,
+        'hint-js' + config.taskPostfix,
         'dist-js' + config.taskPostfix,
         'favicon' + config.taskPostfix,
     ];
@@ -54,21 +63,12 @@ themes.forEach(function (theme) {
 
     browserSync[config.projectName] = require('browser-sync').create(config.projectName);
 
-    require('./tasks/dist-css')({
-        browserSync: browserSync[config.projectName],
-        config: config,
-        groupedTasks: taskGroups
-    });
-
-    require('./tasks/dist-js')({
-        config: config,
-        groupedTasks: taskGroups
-    });
-
-    require('./tasks/dist-copy')({
-        config: config,
-        groupedTasks: taskGroups
-    });
+    for (let key in TASKS) {
+        require('./tasks/' + TASKS[key])({
+            config: config,
+            groupedTasks: taskGroups
+        });
+    }
 
     // if (config.penthouse && config.penthouse.pages) {
     //     penthouseExtractTaskGroups['penthouse-extract' + config.taskPostfix] = ['dist-css' + config.taskPostfix];
@@ -103,37 +103,6 @@ themes.forEach(function (theme) {
     //     projectDistTasks.push('dist-penthouse' + config.taskPostfix);
     // }
 
-    require('./tasks/favicon')({
-        config: config,
-        groupedTasks: taskGroups
-    });
-
-    require('./tasks/hint-js')({
-        config: config,
-        groupedTasks: taskGroups
-    });
-
-    require('./tasks/lint-scss')({
-        config: config,
-        groupedTasks: taskGroups
-    });
-
-    require('./tasks/sass')({
-        config: config,
-        groupedTasks: taskGroups
-    });
-
-    require('./tasks/server')({
-        browserSync: browserSync[config.projectName],
-        config: config,
-        groupedTasks: taskGroups
-    });
-
-    require('./tasks/watch')({
-        config: config,
-        groupedTasks: taskGroups
-    });
-
     gulp.task('dist' + config.taskPostfix, projectDistTasks)
 });
 
@@ -144,5 +113,3 @@ for (var task in taskGroups) {
 }
 
 gulp.task('viz', require('gulp-task-graph-visualizer')());
-
-gulp.task('test', null);

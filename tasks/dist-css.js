@@ -12,7 +12,7 @@ module.exports = function (opts) {
         // CSS
         // console.log('CCS files');
         // console.log(opts.config.project.cssFiles);
-
+console.log(opts.projectName);
         return gulp.src(opts.config.project.cssFiles)
             .pipe(concat('webandco.css'))
             .pipe(sourceMaps.init())
@@ -47,6 +47,6 @@ module.exports = function (opts) {
             .pipe(replace("../../Images", '../Images'))
             // .pipe(replace("../fonts", 'Styles/fonts'))
             .pipe(gulp.dest(opts.config.paths.dist.styles))
-            .pipe(opts.browserSync.stream({match: '**/*.css'}));
+            .pipe(browserSync[opts.config.projectName].stream({match: '**/*.css'}));
     });
 };
