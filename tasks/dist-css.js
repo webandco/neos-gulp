@@ -14,7 +14,7 @@ module.exports = function (opts) {
         // console.log(opts.config.project.cssFiles);
 console.log(opts.projectName);
         return gulp.src(opts.config.project.cssFiles)
-            .pipe(concat('webandco.css'))
+            // .pipe(concat('webandco.css'))
             .pipe(sourceMaps.init())
             .pipe(gulp.dest(opts.config.paths.build.styles))
             // group media queries
