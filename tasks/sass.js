@@ -6,6 +6,8 @@ module.exports = function (opts) {
     gulp.task('sass' + opts.config.taskPostfix, /* ['clean-sass' + opts.config.taskPostfix], */ function () {
         return gulp.src(opts.config.paths.source.sass)
             .pipe(plumber(handleErrors))
+            .pipe(concat('webandco.scss'))
+            .pipe(gulp.dest(opts.config.paths.build.styles))
             .pipe(sass().on('error', sass.logError))
             .pipe(autoprefixer({
                 browsers: ['last 2 versions'],
