@@ -108,5 +108,7 @@ for (let task in taskGroups) {
     gulp.task(task, taskGroups[task]);
 }
 
-gulp.task('viz', require('gulp-task-graph-visualizer')());
+// use `gulp -T`
+// gulp.task('viz', require('gulp-task-graph-visualizer')());
+
 gulp.task('default', ['watch']);
