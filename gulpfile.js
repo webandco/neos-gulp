@@ -33,11 +33,13 @@ const TASKS = [
     "watch"
 ];
 
+let distTasks = [];
+
 // console.log('themes directories');
 // console.log(themes);
 themes.forEach(function (theme) {
-    let themeDir = themePath + theme;
-    let themeName = theme;
+    let themeName = theme.name;
+    let themeDir = theme.path + themeName;
 
     let yamlConfig = readYaml(themeDir + '/Configuration/Gulp.yaml');
     let yamlString = JSON.stringify(yamlConfig);
@@ -100,7 +102,12 @@ themes.forEach(function (theme) {
     // }
 
     gulp.task('dist' + config.taskPostfix, projectDistTasks)
+    distTasks.push('dist' + config.taskPostfix);
 });
+
+if (distTasks.length > 0) {
+    gulp.task('dist', distTasks);
+}
 
 // console.log(taskGroups);
 
