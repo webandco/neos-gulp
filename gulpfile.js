@@ -2,13 +2,21 @@
 
 require("./globals");
 
-let themePath = '../../Packages/Theme/';
+let themePaths = [
+    '../../Packages/Theme/',
+    '../../DistributionPackages/'
+];
 
-let directoryContents = readDir.readSync(themePath, null, readDir.NON_RECURSIVE + readDir.INCLUDE_DIRECTORIES);
-directoryContents.forEach(function (path) {
-    if (path.substring(path.length - 1) == '/') {
-        themes.push(path.substr(0, path.length - 1));
-    }
+themePaths.forEach(function(themePath) {
+    let directoryContents = readDir.readSync(themePath, null, readDir.NON_RECURSIVE + readDir.INCLUDE_DIRECTORIES);
+    directoryContents.forEach(function (path) {
+        if (path.substring(path.length - 1) == '/') {
+            themes.push({
+                name: path.substr(0, path.length - 1),
+                path: themePath
+            });
+        }
+    });
 });
 
 let localTopLevelDomain = 'test';
