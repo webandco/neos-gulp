@@ -45,7 +45,7 @@ themes.forEach(function (theme) {
     let yamlString = JSON.stringify(yamlConfig);
     yamlString = yamlString.replace(/THEME_PATH/g, themeDir);
     yamlString = yamlString.replace(/THEME_NAME/g, themeName);
-    let config = JSON.parse(yamlString).config;
+    let config = JSON.parse(yamlString).Webandco.Gulp.config;
 
     config.projectName = themeName;
     config.taskPostfix = '-' + themeName.toLowerCase().replace(/webco\.(\w+)\.theme/, "$1");

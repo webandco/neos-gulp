@@ -8,10 +8,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://webandco.githost.io/webandco/neos-gulp.git"
+    "url": "https://github.com/webandco/neos-gulp.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {},
   "devDependencies": {
     "ansi-colors": "^1.0.1",
