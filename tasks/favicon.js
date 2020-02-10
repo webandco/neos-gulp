@@ -70,12 +70,14 @@ module.exports = function (opts) {
             }
 
             let code = JSON.parse(fsExtra.readFileSync(opts.config.favicon.dataFile)).favicon.html_code;
-            if (opts.config.favicon.replacePath) {
+            if (opts.config.favicon.replace.templatePath) {
                 // replace with neos uri.resource viewHelper
-                code = code.replace(/(content|href)=\"_PATH_([^\">]+)/gi, "$1=\"{webco:uri.static(path: '" + opts.config.favicon.replacePath + "$2', package: '" + opts.config.sitePackage + "')}");
-                code = '{namespace webco=Webco\\Fou001\\NodeTypes\\ViewHelpers}\n\n' + code;
+                code = code.replace(/(content|href)=\"_PATH_([^\">]+)/gi, "$1=\"{webco:uri.static(path: '" + opts.config.favicon.replace.templatePath + "$2', package: '" + opts.config.projectName + "')}");
+                if (opts.config.favicon.replace.templatePrefix) {
+                    code = opts.config.favicon.replace.templatePrefix + code;
+                }
             } else {
-                gulpUtil.log(gulpUtil.colors.red('replacePath is not configured - favicon'));
+                gulpUtil.log(gulpUtil.colors.yellow('replace.templatePath is not configured - favicon'));
             }
 
             fsExtra.writeFileSync(opts.config.favicon.templateFile, code);
@@ -104,8 +106,11 @@ module.exports = function (opts) {
 
         if (isThere(browserConfigFile)) {
             let code = fsExtra.readFileSync(browserConfigFile).toString();
-            code = code.replace(/_PATH_\//gi, "");
+            if (opts.config.favicon.replace.browserconfigPath) {
+                code = code.replace(/_PATH_/gi, opts.config.favicon.replace.browserconfigPath);
+            }
             fsExtra.writeFileSync(browserConfigFile, code);
+            gulpUtil.log('  Browserconfig: ' + gulpUtil.colors.green( browserConfigFile ) + ' exist!');
         } else {
             gulpUtil.log(gulpUtil.colors.red('Browserconfig file ' + browserConfigFile + ' does not exist! Run task favicon-generate()'));
         }
