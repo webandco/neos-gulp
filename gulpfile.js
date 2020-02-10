@@ -2,24 +2,22 @@
 
 require("./globals");
 
-let themePaths = [
-    '../../Packages/Theme/',
-    '../../DistributionPackages/'
+let packagePaths = [
+    projectRoot + 'Packages/Theme/',
+    projectRoot + 'DistributionPackages/'
 ];
 
-themePaths.forEach(function(themePath) {
-    let directoryContents = readDir.readSync(themePath, null, readDir.NON_RECURSIVE + readDir.INCLUDE_DIRECTORIES);
+packagePaths.forEach(function(packagePath) {
+    let directoryContents = readDir.readSync(packagePath, null, readDir.NON_RECURSIVE + readDir.INCLUDE_DIRECTORIES);
     directoryContents.forEach(function (path) {
         if (path.substring(path.length - 1) == '/') {
-            themes.push({
+            packages.push({
                 name: path.substr(0, path.length - 1),
-                path: themePath
+                path: packagePath
             });
         }
     });
 });
-
-let localTopLevelDomain = 'test';
 
 const TASKS = [
     "dist-css",
@@ -35,20 +33,26 @@ const TASKS = [
 
 let distTasks = [];
 
-// console.log('themes directories');
-// console.log(themes);
-themes.forEach(function (theme) {
-    let themeName = theme.name;
-    let themeDir = theme.path + themeName;
+// console.log(packages);
+packages.forEach(function (theme) {
+    let packageName = theme.name;
+    let packagePath = theme.path + packageName;
 
-    let yamlConfig = readYaml(themeDir + '/Configuration/Gulp.yaml');
+    let yamlConfig = readYaml(packagePath + '/Configuration/Gulp.yaml');
     let yamlString = JSON.stringify(yamlConfig);
-    yamlString = yamlString.replace(/THEME_PATH/g, themeDir);
-    yamlString = yamlString.replace(/THEME_NAME/g, themeName);
+    yamlString = yamlString.replace(/PACKAGE_PATH/g, packagePath);
+    yamlString = yamlString.replace(/PACKAGE_NAME/g, packageName);
+    yamlString = yamlString.replace(/PROJECT_ROOT/g, projectRoot);
+
+    // @deprecated - will be removed. Use PACKAGE_PATH and PACKAGE_NAME instead
+    yamlString = yamlString.replace(/THEME_PATH/g, packagePath);
+    yamlString = yamlString.replace(/THEME_NAME/g, packageName);
+
     let config = JSON.parse(yamlString).Webandco.Gulp.config;
 
-    config.projectName = themeName;
-    config.taskPostfix = '-' + themeName.toLowerCase().replace(/webco\.(\w+)\.theme/, "$1");
+    config.projectName = packageName;
+    // config.taskPostfix = '-' + packageName.toLowerCase().replace(/webco\.(\w+)\.theme/, "$1");
+    config.taskPostfix = '-' + packageName.toLowerCase();
 
     let projectDistTasks = [
         'dist-copy' + config.taskPostfix,

@@ -46,9 +46,10 @@ global.readYaml = FUNCTIONS.readYaml;
 global.addToTaskGroups = FUNCTIONS.addToTaskGroups;
 global.notifyText = FUNCTIONS.notifyText;
 
+global.projectRoot = '../../';
 global.browserSync = [];
 global.taskGroups = [];
-global.themes = [];
+global.packages = [];
 
 global.gulpIcons = {
     error: path.join(__dirname, "assets/gulp-error.png"),
