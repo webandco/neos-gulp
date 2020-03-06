@@ -12,9 +12,11 @@ module.exports = function (opts) {
         // CSS
         // console.log('CCS files');
         // console.log(opts.config.project.cssFiles);
-console.log(opts.projectName);
+
+// console.log(opts.config.projectName);
+
         return gulp.src(opts.config.project.cssFiles)
-            // .pipe(concat('webandco.css'))
+            .pipe(concat(opts.config.project.css.filename ? opts.config.project.css.filename : 'style.css'))
             .pipe(sourceMaps.init())
             .pipe(gulp.dest(opts.config.paths.build.styles))
             // group media queries

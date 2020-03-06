@@ -23,6 +23,7 @@ Webandco:
             - 'PACKAGE_PATH/Resources/Private/Fusion/**/*.scss'
       project:
         css:
+          filename: 'style.css'
           # remove all comments, @see https://github.com/sindresorhus/strip-css-comments#options
           stripCssComments:
             preserve: false
