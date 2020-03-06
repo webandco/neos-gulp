@@ -3,6 +3,7 @@
 # PACKAGE_PATH ... The path to the package, where this file is located
 # PACKAGE_NAME ... The name of the package, eg Vendor.Site
 # PROJECT_ROOT ... The Neos root path, also know as FLOW_PATH_ROOT
+# FAVICON_URL  ... The URL of the favicon, can only be used in Webandco.Gulp.config.favicon.replace.templateHrefPattern
 
 Webandco:
   Gulp:
@@ -53,6 +54,7 @@ Webandco:
           browserconfigPath: '/_Resources/Static/Packages/PACKAGE_NAME/Images/favicons'
           templatePath: 'Images/favicons'
           templatePrefix: "{namespace webco=Webco\\Fou001\\NodeTypes\\ViewHelpers}\n\n"
+          templateHrefPattern: "{f:uri.resource(path: 'FAVICON_URL', package: 'PACKAGE_NAME')}"
       server:
         browserSync:
           # set the proxy to the local Neos url

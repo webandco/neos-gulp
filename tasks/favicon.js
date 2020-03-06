@@ -38,8 +38,6 @@ module.exports = function (opts) {
         gulpUtil.log('  JsonDir    :', gulpUtil.colors.green(resourceJsonDir), 'was created');
     }
 
-
-
     if (isThere(opts.config.favicon.dest)) {
         gulpUtil.log('  Dest       :', gulpUtil.colors.green(opts.config.favicon.dest), 'exists');
     } else {
@@ -68,13 +66,17 @@ module.exports = function (opts) {
                 );
                 gulpUtil.log('  TemplateDir:', gulpUtil.colors.green(templateDir), 'was created');
             }
-
             let code = JSON.parse(fsExtra.readFileSync(opts.config.favicon.dataFile)).favicon.html_code;
             if (opts.config.favicon.replace.templatePath) {
-                // replace with neos uri.resource viewHelper
-                code = code.replace(/(content|href)=\"_PATH_([^\">]+)/gi, "$1=\"{webco:uri.static(path: '" + opts.config.favicon.replace.templatePath + "$2', package: '" + opts.config.projectName + "')}");
                 if (opts.config.favicon.replace.templatePrefix) {
                     code = opts.config.favicon.replace.templatePrefix + code;
+                }
+                if (opts.config.favicon.replace.templateHrefPattern) {
+                    let pattern = "$1=\"{webco:uri.static(path: '" + opts.config.favicon.replace.templatePath + "$2', package: '" + opts.config.projectName + "')}";
+                    pattern = '$1="' +  opts.config.favicon.replace.templateHrefPattern;
+                    pattern = pattern.replace(/FAVICON_URL/g, opts.config.favicon.replace.templatePath + "$2");
+                    // replace image url with pattern, eg for view Helpers
+                    code = code.replace(/(content|href)=\"_PATH_([^\">]+)/gi, pattern);
                 }
             } else {
                 gulpUtil.log(gulpUtil.colors.yellow('replace.templatePath is not configured - favicon'));
