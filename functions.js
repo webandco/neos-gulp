@@ -34,6 +34,20 @@ function addToTaskGroups(groups, task, postfix) {
 //     require("./task");
 // }
 
+function replacePlaceholder(code, packagePath, packageName, projectRoot) {
+    let result = code;
+
+    result = result.replace(/PACKAGE_PATH/g, packagePath);
+    result = result.replace(/PACKAGE_NAME/g, packageName);
+    result = result.replace(/PROJECT_ROOT/g, projectRoot);
+
+    // @deprecated - will be removed. Use PACKAGE_PATH and PACKAGE_NAME instead
+    result = result.replace(/THEME_PATH/g, packagePath);
+    result = result.replace(/THEME_NAME/g, packageName);
+
+    return result;
+}
+
 function notifyText(object) {
     if (object.warning || object.error || object.warnings || object.errors) {
         let warning;
@@ -89,6 +103,7 @@ function notifyText(object) {
 module.exports = {
     // getTimestamp: getTimestamp,
     // loadTasks: loadTasks,
+    addToTaskGroups: addToTaskGroups,
     readYaml: readYaml,
-    addToTaskGroups: addToTaskGroups
+    replacePlaceholder: replacePlaceholder
 };

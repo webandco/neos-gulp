@@ -45,6 +45,7 @@ const FUNCTIONS = require("./functions");
 global.readYaml = FUNCTIONS.readYaml;
 global.addToTaskGroups = FUNCTIONS.addToTaskGroups;
 global.notifyText = FUNCTIONS.notifyText;
+global.replacePlaceholder = FUNCTIONS.replacePlaceholder;
 
 global.projectRoot = '../../';
 global.browserSync = [];
