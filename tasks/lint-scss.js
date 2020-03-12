@@ -1,16 +1,23 @@
 'use strict';
 
-var maxBufferSize = 1024 * 1000;
+const log = require('fancy-log');
+const colors = require('ansi-colors');
+const lint = require('gulp-scss-lint');
+const lintStylish = require('gulp-scss-lint-stylish');
+const cache = require('gulp-cached');
+const gulp = require('gulp');
 
-module.exports = function (opts) {
-    if (!(opts.config.project.lint && opts.config.project.lint.scss)) {
-        gulpUtil.log(gulpUtil.colors.red('No js files configured for lint - lint-scss'));
-        return false;
+const maxBufferSize = 1024 * 1000;
+
+module.exports = function ({config}) {
+    if (!(config.project.styles.lint)) {
+        log(colors.red('No scss files configured for lint - lint-scss'));
+        return;
     }
-    addToTaskGroups(opts.groupedTasks, 'lint-scss', opts.config.taskPostfix);
+    //addToTaskGroups(opts.groupedTasks, 'lint-scss', opts.config.taskPostfix);
 
-    gulp.task('lint-scss' + opts.config.taskPostfix, function () {
-        return gulp.src(opts.config.project.lint.scss)
+    gulp.task('lint-scss' + config.taskPostfix, function() {
+        return gulp.src(config.project.styles.lint)
             .pipe(cache('scssLint'))
             .pipe(lint(
                 {

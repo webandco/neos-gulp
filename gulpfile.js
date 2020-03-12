@@ -1,18 +1,29 @@
 "use strict";
 
-require("./globals");
+const fs = require('fs');
+const path = require('path');
+const log = require('fancy-log');
+const colors = require('ansi-colors');
+const gulp = require('gulp');
+const { readYaml, replacePlaceholder } = require('./functions');
+
+
+const projectRoot = path.join(__dirname, '..', '..');
 
 let packagePaths = [
-    projectRoot + 'Packages/Theme/',
-    projectRoot + 'DistributionPackages/'
+    path.join(projectRoot, 'Packages/Theme/'),
+    path.join(projectRoot, 'DistributionPackages/')
 ];
 
-packagePaths.forEach(function(packagePath) {
-    let directoryContents = readDir.readSync(packagePath, null, readDir.NON_RECURSIVE + readDir.INCLUDE_DIRECTORIES);
-    directoryContents.forEach(function (path) {
-        if (path.substring(path.length - 1) == '/') {
+const packages = [];
+
+packagePaths.forEach(packagePath => {
+    if (!fs.existsSync(packagePath)) return;
+    const directoryContents = fs.readdirSync(packagePath);
+    directoryContents.forEach(packageName => {
+        if (fs.statSync(path.join(packagePath, packageName)).isDirectory()) {
             packages.push({
-                name: path.substr(0, path.length - 1),
+                name: packageName,
                 path: packagePath
             });
         }
@@ -20,26 +31,26 @@ packagePaths.forEach(function(packagePath) {
 });
 
 const TASKS = [
-    "dist-css",
-    "dist-js",
-    "dist-copy",
+    // "dist-css-fusion",
+    // "dist-css-bundle",
+    // "dist-js-fusion",
+    // "dist-js-bundle",
+    // "dist-copy",
     "favicon",
-    "hint-js",
+    // "lint-js",
     "lint-scss",
-    "sass",
-    "server",
-    "watch"
+    // "server",
+    // "watch"
 ];
 
-let distTasks = [];
+const distTasks = [];
 
-// console.log(packages);
-packages.forEach(function (theme) {
-    let packageName = theme.name;
-    let packagePath = theme.path + packageName;
-    let yamlConfigFile = packagePath + '/Configuration/Gulp.yaml' ;
+packages.forEach(theme => {
+    const packageName = theme.name;
+    const packagePath = path.join(theme.path, packageName);
+    const yamlConfigFile = path.join(packagePath, '/Configuration/Gulp.yaml');
 
-    if (isThere(yamlConfigFile)) {
+    if (fs.existsSync(yamlConfigFile)) {
         let yamlConfig = readYaml(yamlConfigFile);
         let yamlString = JSON.stringify(yamlConfig);
         yamlString = replacePlaceholder(yamlString, packagePath, packageName, projectRoot);
@@ -50,59 +61,29 @@ packages.forEach(function (theme) {
         config.taskPostfix = '-' + packageName.toLowerCase();
 
         let projectDistTasks = [
-            'dist-copy' + config.taskPostfix,
-            'dist-css' + config.taskPostfix,
-            'hint-js' + config.taskPostfix,
-            'dist-js' + config.taskPostfix,
+            // 'dist-copy' + config.taskPostfix,
+            // 'dist-css-bundle' + config.taskPostfix,
+            // 'dist-css-fusion' + config.taskPostfix,
+            // 'lint-js' + config.taskPostfix,
+            // 'dist-js-bundle' + config.taskPostfix,
+            // 'dist-js-fusion' + config.taskPostfix,
             'favicon' + config.taskPostfix,
         ];
 
-        browserSync[config.projectName] = require('browser-sync').create(config.projectName);
+        const browserSync = require('browser-sync').create(config.projectName);
 
         for (let key in TASKS) {
             require('./tasks/' + TASKS[key])({
                 config: config,
-                groupedTasks: taskGroups
+                browserSync: browserSync,
+                //groupedTasks: taskGroups
             });
         }
 
-        // if (config.penthouse && config.penthouse.pages) {
-        //     penthouseExtractTaskGroups['penthouse-extract' + config.taskPostfix] = ['dist-css' + config.taskPostfix];
-        //     // console.log('penthouse', config.penthouse);
-        //     // console.log('pages', config.penthouse.pages);
-        //     require('./task/dist-penthouse')({
-        //         config: config,
-        //         groupedTasks: taskGroups,
-        //         gulp: gulp,
-        //         distTasks: penthouseDistTaskGroups,
-        //     });
-        //
-        //     for (let distId in config.penthouse.dist) {
-        //         // console.log(penthouseId, config.penthouse.dist[distId]);
-        //         require('./task/penthouse-combine')({
-        //             config: config,
-        //             groupedTasks: penthouseCombineTaskGroups,
-        //             distId: distId,
-        //             gulp: gulp
-        //         });
-        //     }
-        //
-        //     for (let penthouseId in config.penthouse.pages) {
-        //         // console.log(penthouseId, config.penthouse.pages[penthouseId]);
-        //         require('./task/penthouse-extract')({
-        //             config: config,
-        //             groupedTasks: penthouseExtractTaskGroups,
-        //             penthouseId: penthouseId,
-        //             gulp: gulp
-        //         });
-        //     }
-        //     projectDistTasks.push('dist-penthouse' + config.taskPostfix);
-        // }
-
-        gulp.task('dist' + config.taskPostfix, projectDistTasks)
+        gulp.task('dist' + config.taskPostfix, projectDistTasks);
         distTasks.push('dist' + config.taskPostfix);
     } else {
-        gulpUtil.log(gulpUtil.colors.gray(packageName + ' - Package has no Gulp.yaml file'));
+        log(colors.gray(packageName + ' - Package has no Gulp.yaml file'));
     }
 });
 
@@ -112,9 +93,9 @@ if (distTasks.length > 0) {
 
 // console.log(taskGroups);
 
-for (let task in taskGroups) {
-    gulp.task(task, taskGroups[task]);
-}
+// for (let task in taskGroups) {
+//     gulp.task(task, taskGroups[task]);
+// }
 
 // use `gulp -T`
 // gulp.task('viz', require('gulp-task-graph-visualizer')());

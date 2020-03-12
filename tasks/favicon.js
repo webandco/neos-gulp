@@ -1,72 +1,76 @@
 'use strict';
 
+const log = require('fancy-log');
+const colors = require('ansi-colors');
+const realFavicon = require('gulp-real-favicon');
+const gulp = require('gulp');
+const fs = require('fs');
+const path = require('path');
+
 module.exports = function (opts) {
     if (!opts.config.favicon) {
-        gulpUtil.log(gulpUtil.colors.red('favicon not configured - favicon'));
-        return false;
+        log(colors.red('favicon not configured - favicon'));
+        return;
     }
 
     if (!opts.config.favicon.masterPicture) {
-        gulpUtil.log(gulpUtil.colors.red('masterPicture not configured - favicon'));
-        return false;
+        log(colors.red('masterPicture not configured - favicon'));
+        return;
     }
 
-    if (false === isThere(opts.config.favicon.masterPicture)) {
-        gulpUtil.log(gulpUtil.colors.red('masterPicture file ' + opts.config.favicon.masterPicture + ' does not exists'));
+    if (!fs.existsSync(opts.config.favicon.masterPicture)) {
+        log(colors.red('masterPicture file ' + opts.config.favicon.masterPicture + ' does not exists'));
         return false;
     }
 
     if (!opts.config.favicon.templateFile) {
-        gulpUtil.log(gulpUtil.colors.red('templateFile is not configured - favicon'));
-        return false;
+        log(colors.red('templateFile is not configured - favicon'));
+        return;
     }
 
-    addToTaskGroups(opts.groupedTasks, 'favicon', opts.config.taskPostfix);
+    //addToTaskGroups(opts.groupedTasks, 'favicon', opts.opts.config.taskPostfix);
 
-    gulpUtil.log('Favicon      :');
-    let resourceJsonDir = path.dirname(opts.config.favicon.dataFile);
+    log('Favicon      :');
+    const resourceJsonDir = path.dirname(opts.config.favicon.dataFile);
 
-    if (isThere(resourceJsonDir)) {
-        gulpUtil.log('  JsonDir    :', gulpUtil.colors.green(resourceJsonDir), 'exists');
+    if (fs.existsSync(resourceJsonDir)) {
+        log('  JsonDir    :', colors.green(resourceJsonDir), 'exists');
     } else {
-        fsExtra.mkdirs(resourceJsonDir, function (err) {
-            if (err) {
-                    return console.error(err);
-                }
-            }
-        );
-        gulpUtil.log('  JsonDir    :', gulpUtil.colors.green(resourceJsonDir), 'was created');
+        try {
+            fs.mkdirSync(resourceJsonDir);
+            log('  JsonDir    :', colors.green(resourceJsonDir), 'was created');
+        } catch (e) {
+            log.error(e);
+        }
     }
 
-    if (isThere(opts.config.favicon.dest)) {
-        gulpUtil.log('  Dest       :', gulpUtil.colors.green(opts.config.favicon.dest), 'exists');
+    if (fs.existsSync(opts.config.favicon.dest)) {
+        log('  Dest       :', colors.green(opts.config.favicon.dest), 'exists');
     } else {
-        fsExtra.mkdirs(opts.config.favicon.dest, function (err) {
-                if (err) {
-                    gulpUtil.log('  Dest       :', gulpUtil.colors.red(opts.config.favicon.dest), 'does not exist');
-                    return console.error(err);
-                }
-            }
-        );
-        gulpUtil.log('  Dest       :', gulpUtil.colors.green(opts.config.favicon.dest), 'was created');
+        try {
+            fs.mkdirSync(opts.config.favicon.dest);
+            log('  Dest       :', colors.green(opts.config.favicon.dest), 'was created');
+        } catch (e) {
+            log.error(e);
+        }
     }
-    gulpUtil.log('--');
+    log('--');
 
     gulp.task('favicon-create-template' + opts.config.taskPostfix, function (done) {
-        if (isThere(opts.config.favicon.dataFile)) {
-            let templateDir = path.dirname(opts.config.favicon.templateFile);
-            if (isThere(templateDir)) {
-                gulpUtil.log('  TemplateDir:', gulpUtil.colors.green(templateDir), 'exists');
+        if (fs.existsSync(opts.config.favicon.dataFile)) {
+            const templateDir = path.dirname(opts.config.favicon.templateFile);
+            if (fs.existsSync(templateDir)) {
+                log('  TemplateDir:', colors.green(templateDir), 'exists');
             } else {
-                fsExtra.mkdirs(templateDir, function (err) {
-                    if (err) {
-                            return console.error(err);
-                        }
-                    }
-                );
-                gulpUtil.log('  TemplateDir:', gulpUtil.colors.green(templateDir), 'was created');
+                try {
+                    fs.mkdirSync(templateDir);
+                    log('  TemplateDir:', colors.green(templateDir), 'was created');
+
+                } catch (e) {
+                    log.error(e);
+                }
             }
-            let code = JSON.parse(fsExtra.readFileSync(opts.config.favicon.dataFile)).favicon.html_code;
+            let code = JSON.parse(fs.readFileSync(opts.config.favicon.dataFile).toString()).favicon.html_code;
             if (opts.config.favicon.replace.templatePath) {
                 if (opts.config.favicon.replace.templatePrefix) {
                     code = opts.config.favicon.replace.templatePrefix + code;
@@ -79,13 +83,13 @@ module.exports = function (opts) {
                     code = code.replace(/(content|href)=\"_PATH_([^\">]+)/gi, pattern);
                 }
             } else {
-                gulpUtil.log(gulpUtil.colors.yellow('replace.templatePath is not configured - favicon'));
+                log(colors.yellow('replace.templatePath is not configured - favicon'));
             }
 
-            fsExtra.writeFileSync(opts.config.favicon.templateFile, code);
-            gulpUtil.log('  Template  :', gulpUtil.colors.green(opts.config.favicon.templateFile), 'created');
+            fs.writeFileSync(opts.config.favicon.templateFile, code);
+            log('  Template  :', colors.green(opts.config.favicon.templateFile), 'created');
         } else {
-            gulpUtil.log(gulpUtil.colors.red('Datafile ' + opts.config.favicon.dataFile + ' does not exist! Run task favicon-generate()'));
+            log(colors.red('Datafile ' + opts.config.favicon.dataFile + ' does not exist! Run task favicon-generate()'));
         }
 
         done();
@@ -94,27 +98,27 @@ module.exports = function (opts) {
     gulp.task('favicon-replace-webmanifest' + opts.config.taskPostfix, function (done) {
         let manifestFile = opts.config.favicon.dest + "/site.webmanifest";
 
-        if (isThere(manifestFile)) {
-            let code = fsExtra.readFileSync(manifestFile).toString();
+        if (fs.existsSync(manifestFile)) {
+            let code = fs.readFileSync(manifestFile).toString();
             code = code.replace(/_PATH_\//gi, "");
-            fsExtra.writeFileSync(manifestFile, code);
+            fs.writeFileSync(manifestFile, code);
         } else {
-            gulpUtil.log(gulpUtil.colors.red('Webmanifest file : ' + manifestFile, 'does not exist! Run task favicon-generate()'));
+            log(colors.red('Webmanifest file : ' + manifestFile + ' does not exist! Run task favicon-generate()'));
         }
     });
 
     gulp.task('favicon-replace-browserconfig' + opts.config.taskPostfix, function (done) {
         let browserConfigFile = opts.config.favicon.dest + "/browserconfig.xml";
 
-        if (isThere(browserConfigFile)) {
-            let code = fsExtra.readFileSync(browserConfigFile).toString();
+        if (fs.existsSync(browserConfigFile)) {
+            let code = fs.readFileSync(browserConfigFile).toString();
             if (opts.config.favicon.replace.browserconfigPath) {
                 code = code.replace(/_PATH_/gi, opts.config.favicon.replace.browserconfigPath);
             }
-            fsExtra.writeFileSync(browserConfigFile, code);
-            gulpUtil.log('  Browserconfig: ' + gulpUtil.colors.green( browserConfigFile ) + ' exist!');
+            fs.writeFileSync(browserConfigFile, code);
+            log('  Browserconfig: ' + colors.green( browserConfigFile ) + ' exist!');
         } else {
-            gulpUtil.log(gulpUtil.colors.red('Browserconfig file ' + browserConfigFile + ' does not exist! Run task favicon-generate()'));
+            log(colors.red('Browserconfig file ' + browserConfigFile + ' does not exist! Run task favicon-generate()'));
         }
     });
 
@@ -174,11 +178,11 @@ module.exports = function (opts) {
     gulp.task('favicon-check-for-update' + opts.config.taskPostfix, function (done) {
         let currentVersion = '';
 
-        if (isThere(opts.config.favicon.dataFile)) {
-            currentVersion = JSON.parse(fsExtra.readFileSync(opts.config.favicon.dataFile)).version;
+        if (fs.existsSync(opts.config.favicon.dataFile)) {
+            currentVersion = JSON.parse(fs.readFileSync(opts.config.favicon.dataFile).toString()).version;
         }
 
-        gulpUtil.log('Favicon: Checking Version ', gulpUtil.colors.green(currentVersion));
+        log('Favicon: Checking Version ', colors.green(currentVersion));
         realFavicon.checkForUpdates(currentVersion, function (err) {
             if (err !== undefined) {
                 gulp.start('favicon-generate' + opts.config.taskPostfix);
