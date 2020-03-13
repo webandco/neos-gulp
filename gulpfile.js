@@ -31,9 +31,9 @@ packagePaths.forEach(packagePath => {
 });
 
 const TASKS = [
-    // "dist-css-fusion",
+    "dist-css-fusion",
     "dist-css-bundle",
-    // "dist-js-fusion",
+    //"dist-js-fusion",
     // "dist-js-bundle",
     // "dist-copy",
     "favicon",
@@ -63,7 +63,7 @@ packages.forEach(theme => {
         let projectDistTasks = [
             // 'dist-copy' + config.taskPostfix,
             'dist-css-bundle' + config.taskPostfix,
-            // 'dist-css-fusion' + config.taskPostfix,
+            'dist-css-fusion' + config.taskPostfix,
             // 'lint-js' + config.taskPostfix,
             // 'dist-js-bundle' + config.taskPostfix,
             // 'dist-js-fusion' + config.taskPostfix,
