@@ -19,11 +19,6 @@ module.exports = function (opts) {
     //addToTaskGroups(opts.groupedTasks, 'dist-css', opts.config.taskPostfix);
 
     gulp.task('dist-css-fusion' + opts.config.taskPostfix, function () {
-        // CSS
-        // console.log('CCS files');
-        // console.log(opts.config.project.cssFiles);
-
-// console.log(opts.config.projectName);
 
         const dependencies = opts.config.project.styles.fusion.dependencies.reduce((acc, cur) => {
             return acc + '@import "' + cur + '";\n';

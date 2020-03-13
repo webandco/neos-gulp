@@ -37,7 +37,7 @@ const TASKS = [
     // "dist-js-bundle",
     // "dist-copy",
     "favicon",
-    // "lint-js",
+    "lint-js",
     "lint-scss",
     // "server",
     // "watch"
@@ -64,7 +64,6 @@ packages.forEach(theme => {
             // 'dist-copy' + config.taskPostfix,
             'dist-css-bundle' + config.taskPostfix,
             'dist-css-fusion' + config.taskPostfix,
-            // 'lint-js' + config.taskPostfix,
             // 'dist-js-bundle' + config.taskPostfix,
             // 'dist-js-fusion' + config.taskPostfix,
             'favicon' + config.taskPostfix,
