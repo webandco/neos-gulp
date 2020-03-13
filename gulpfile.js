@@ -35,7 +35,7 @@ const TASKS = [
     "dist-css-bundle",
     //"dist-js-fusion",
     // "dist-js-bundle",
-    // "dist-copy",
+    "dist-copy",
     "favicon",
     "lint-js",
     "lint-scss",
@@ -61,7 +61,7 @@ packages.forEach(theme => {
         config.taskPostfix = '-' + packageName.toLowerCase();
 
         let projectDistTasks = [
-            // 'dist-copy' + config.taskPostfix,
+            'dist-copy' + config.taskPostfix,
             'dist-css-bundle' + config.taskPostfix,
             'dist-css-fusion' + config.taskPostfix,
             // 'dist-js-bundle' + config.taskPostfix,
