@@ -40,7 +40,7 @@ const TASKS = [
     "lint-js",
     "lint-scss",
     // "server",
-    // "watch"
+    "watch"
 ];
 
 const DIST_TASKS = [

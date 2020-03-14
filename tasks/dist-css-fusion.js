@@ -3,7 +3,6 @@
 const gulp = require('gulp');
 const sourceMaps = require('gulp-sourcemaps');
 const gulpif = require('gulp-if');
-const {getOptionsWatchDist} = require('../functions');
 const sass = require('gulp-sass');
 const gcmq = require('gulp-group-css-media-queries');
 const autoprefixer = require('gulp-autoprefixer');
@@ -17,9 +16,6 @@ module.exports = function (opts) {
         return 'no-task';
     }
 
-    const options = getOptionsWatchDist(opts.config.project.styles.options);
-
-
     //addToTaskGroups(opts.groupedTasks, 'dist-css', opts.config.taskPostfix);
 
     gulp.task('dist-css-fusion' + opts.config.taskPostfix, function () {
@@ -29,7 +25,7 @@ module.exports = function (opts) {
         }, '');
 
         return gulp.src(opts.config.project.styles.fusion.sources)
-            .pipe(gulpif(options.sourceMaps, sourceMaps.init()))
+            .pipe(gulpif(opts.config.project.styles.options.sourceMaps, sourceMaps.init()))
             .pipe(modifyFile((content, path, file) => {
                 return dependencies + content;
             }))
@@ -54,14 +50,14 @@ module.exports = function (opts) {
                 // console.log(details.name + ': ' + details.stats.originalSize + 'kb source');
                 // console.log(details.name + ': ' + details.stats.minifiedSize + 'kb minified');
             }))
-            .pipe(stripCssComments(options.stripCssComments))
+            .pipe(stripCssComments(opts.config.project.styles.options.stripCssComments))
             // .pipe(gulp.dest(paths.dist.styles)) // needed here for header()
             // .pipe(header(project.banner))
             // replace in the correct sass path with dist relative path
             .pipe(replace("../../../Images", '../Images'))
             .pipe(replace("../../Images", '../Images'))
             // .pipe(replace("../fonts", 'Styles/fonts'))
-            .pipe(gulpif(options.sourceMaps, sourceMaps.write('./')))
+            .pipe(gulpif(opts.config.project.styles.options.sourceMaps, sourceMaps.write('./')))
             .pipe(gulp.dest(opts.config.paths.dist.styles));
     });
 };

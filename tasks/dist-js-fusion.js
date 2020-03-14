@@ -7,7 +7,6 @@ const babel = require('gulp-babel');
 const terser = require('gulp-terser');
 const sourceMaps = require('gulp-sourcemaps');
 const gulpif = require('gulp-if');
-const {getOptionsWatchDist} = require('../functions');
 const modifyFile = require('gulp-modify-file');
 const { paramCase } = require('change-case');
 const path = require('path');
@@ -17,14 +16,12 @@ module.exports = function (opts) {
         return 'no-task';
     }
 
-    const options = getOptionsWatchDist(opts.config.project.scripts.options);
-
     // addToTaskGroups(opts.groupedTasks, 'dist-js', opts.config.taskPostfix);
 
     gulp.task('dist-js-fusion' + opts.config.taskPostfix, function () {
 
         return gulp.src(opts.config.project.scripts.fusion.sources)
-            .pipe(gulpif(options.sourceMaps, sourceMaps.init()))
+            .pipe(gulpif(opts.config.project.scripts.options.sourceMaps, sourceMaps.init()))
             .pipe(modifyFile((content, filePath, file) => {
                 let className = content.match(/(?<!\/\/\s)const\sclassName\s?=\s?("|')([A-Za-z-]+)("|');/);
                 if (!className) {
@@ -45,8 +42,8 @@ module.exports = function (opts) {
             .pipe(babel({
                 presets: ['@babel/env']
             }))
-            .pipe(gulpif(options.minify, terser()))
-            .pipe(gulpif(options.sourceMaps, sourceMaps.write('./')))
+            .pipe(gulpif(opts.config.project.scripts.options.minify, terser()))
+            .pipe(gulpif(opts.config.project.scripts.options.sourceMaps, sourceMaps.write('./')))
             .pipe(gulp.dest(opts.config.paths.dist.scripts));
     });
 };

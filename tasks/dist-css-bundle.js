@@ -4,7 +4,6 @@ const gulp = require('gulp');
 const concat = require('gulp-concat');
 const sourceMaps = require('gulp-sourcemaps');
 const gulpif = require('gulp-if');
-const {getOptionsWatchDist} = require('../functions');
 const sass = require('gulp-sass');
 const gcmq = require('gulp-group-css-media-queries');
 const autoprefixer = require('gulp-autoprefixer');
@@ -17,14 +16,12 @@ module.exports = function (opts) {
         return 'no-task';
     }
 
-    const options = getOptionsWatchDist(opts.config.project.styles.options);
-
     //addToTaskGroups(opts.groupedTasks, 'dist-css', opts.config.taskPostfix);
 
     gulp.task('dist-css-bundle' + opts.config.taskPostfix, function () {
 
         return gulp.src(opts.config.project.styles.bundled.sources)
-            .pipe(gulpif(options.sourceMaps, sourceMaps.init()))
+            .pipe(gulpif(opts.config.project.styles.options.sourceMaps, sourceMaps.init()))
             .pipe(concat(opts.config.project.styles.bundled.filename ? opts.config.project.styles.bundled.filename : 'style.css'))
             .pipe(sass().on('error', sass.logError))
             .pipe(autoprefixer({
@@ -55,7 +52,7 @@ module.exports = function (opts) {
             .pipe(replace("../../Images", '../Images'))
             // .pipe(replace("../fonts", 'Styles/fonts'))
             .pipe(sourceMaps.write('./'))
-            .pipe(gulpif(options.sourceMaps, sourceMaps.write('./')))
+            .pipe(gulpif(opts.config.project.styles.options.sourceMaps, sourceMaps.write('./')))
             .pipe(gulp.dest(opts.config.paths.dist.styles))
             .pipe(opts.browserSync.stream({match: '**/*.css'}));
     });

@@ -7,20 +7,6 @@ function readYaml(path) {
     return yaml.safeLoad(fs.readFileSync(path));
 }
 
-let isWatch = false;
-
-function setIsWatch() {
-    isWatch = true;
-}
-
-function getOptionsWatchDist(config) {
-    if (isWatch) {
-        return config['watch'] || config['dist'];
-    } else {
-        return config['dist'];
-    }
-}
-
 // function addToTaskGroups(groups, task, postfix) {
 //     if (undefined === groups[task]) {
 //          groups[task] = [];
@@ -48,7 +34,5 @@ function replacePlaceholder(code, packagePath, packageName, projectRoot) {
 
 module.exports = {
     readYaml,
-    replacePlaceholder,
-    getOptionsWatchDist,
-    setIsWatch
+    replacePlaceholder
 };
