@@ -44,7 +44,7 @@ module.exports = function (opts) {
                 // console.log(details.name + ': ' + details.stats.originalSize + 'kb source');
                 // console.log(details.name + ': ' + details.stats.minifiedSize + 'kb minified');
             }))
-            .pipe(stripCssComments(options.stripCssComments))
+            .pipe(stripCssComments(opts.config.project.styles.options.stripCssComments))
             // .pipe(gulp.dest(paths.dist.styles)) // needed here for header()
             // .pipe(header(project.banner))
             // replace in the correct sass path with dist relative path

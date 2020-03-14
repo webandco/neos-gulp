@@ -39,7 +39,7 @@ const TASKS = [
     "favicon",
     "lint-js",
     "lint-scss",
-    // "server",
+    "server",
     "watch"
 ];
 

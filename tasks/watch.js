@@ -11,13 +11,13 @@ module.exports = function (opts) {
             gulp.watch([opts.config.project.styles.bundled.watch], ['dist-css-bundle' + opts.config.taskPostfix]);
 
         if (opts.config.project.styles.fusion && opts.config.project.styles.fusion.watch)
-            gulp.watch([opts.config.project.styles.fusion.watch], ['dist-css-fusion' + opts.config.taskPostfix]);
+            gulp.watch([opts.config.project.styles.fusion.watch], ['dist-css-fusion' + opts.config.taskPostfix, opts.browserSync.reload]);
 
         if (opts.config.project.scripts.bundled && opts.config.project.scripts.bundled.watch)
             gulp.watch([opts.config.project.scripts.bundled.watch], ['dist-js-bundle' + opts.config.taskPostfix]);
 
         if (opts.config.project.scripts.fusion && opts.config.project.scripts.fusion.watch)
-            gulp.watch([opts.config.project.scripts.fusion.watch], ['dist-js-fusion' + opts.config.taskPostfix]);
+            gulp.watch([opts.config.project.scripts.fusion.watch], ['dist-js-fusion' + opts.config.taskPostfix, opts.browserSync.reload]);
 
         if (opts.config.project.scripts.lint && opts.config.project.scripts.lint.sources)
             gulp.watch([opts.config.project.scripts.lint.sources], ['lint-js' + opts.config.taskPostfix]);
