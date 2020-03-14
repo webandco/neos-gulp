@@ -6,7 +6,7 @@ const colors = require('ansi-colors');
 
 module.exports = function (opts) {
     if (!opts.config.project.copyFiles) {
-        return;
+        return 'no-task';
     }
 
     // addToTaskGroups(opts.groupedTasks, 'dist-copy', opts.config.taskPostfix);

@@ -1,6 +1,11 @@
 'use strict';
 
+const { setIsWatch } = require('../functions');
+
 module.exports = function (opts) {
+
+    setIsWatch();
+
     addToTaskGroups(opts.groupedTasks, 'watch', opts.config.taskPostfix);
 
     gulp.task('watch' + opts.config.taskPostfix, function () {

@@ -3,6 +3,8 @@
 const gulp = require('gulp');
 const concat = require('gulp-concat');
 const sourceMaps = require('gulp-sourcemaps');
+const gulpif = require('gulp-if');
+const {getOptionsWatchDist} = require('../functions');
 const sass = require('gulp-sass');
 const gcmq = require('gulp-group-css-media-queries');
 const autoprefixer = require('gulp-autoprefixer');
@@ -13,20 +15,17 @@ const replace = require('gulp-replace');
 module.exports = function (opts) {
     if (!(opts.config.project.styles && opts.config.project.styles.bundled)) {
         // gulpUtil.log(gulpUtil.colors.red('No css files configured - dist-css));
-        return;
+        return 'no-task';
     }
+
+    const options = getOptionsWatchDist(opts.config.project.styles.options);
 
     //addToTaskGroups(opts.groupedTasks, 'dist-css', opts.config.taskPostfix);
 
     gulp.task('dist-css-bundle' + opts.config.taskPostfix, function () {
-        // CSS
-        // console.log('CCS files');
-        // console.log(opts.config.project.cssFiles);
-
-// console.log(opts.config.projectName);
 
         return gulp.src(opts.config.project.styles.bundled.sources)
-            .pipe(sourceMaps.init())
+            .pipe(gulpif(options.sourceMaps, sourceMaps.init()))
             .pipe(concat(opts.config.project.styles.bundled.filename ? opts.config.project.styles.bundled.filename : 'style.css'))
             .pipe(sass().on('error', sass.logError))
             .pipe(autoprefixer({
@@ -49,7 +48,7 @@ module.exports = function (opts) {
                 // console.log(details.name + ': ' + details.stats.originalSize + 'kb source');
                 // console.log(details.name + ': ' + details.stats.minifiedSize + 'kb minified');
             }))
-            .pipe(stripCssComments(opts.config.project.styles.stripCssComments))
+            .pipe(stripCssComments(options.stripCssComments))
             // .pipe(gulp.dest(paths.dist.styles)) // needed here for header()
             // .pipe(header(project.banner))
             // replace in the correct sass path with dist relative path
@@ -57,7 +56,7 @@ module.exports = function (opts) {
             .pipe(replace("../../Images", '../Images'))
             // .pipe(replace("../fonts", 'Styles/fonts'))
             .pipe(sourceMaps.write('./'))
-            .pipe(gulp.dest(opts.config.paths.dist.styles))
+            .pipe(gulpif(options.sourceMaps, sourceMaps.write('./')))
             .pipe(opts.browserSync.stream({match: '**/*.css'}));
     });
 };

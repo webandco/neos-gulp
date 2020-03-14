@@ -34,13 +34,22 @@ const TASKS = [
     "dist-css-fusion",
     "dist-css-bundle",
     //"dist-js-fusion",
-    // "dist-js-bundle",
+    "dist-js-bundle",
     "dist-copy",
     "favicon",
     "lint-js",
     "lint-scss",
     // "server",
     // "watch"
+];
+
+const DIST_TASKS = [
+    "dist-css-fusion",
+    "dist-css-bundle",
+    //"dist-js-fusion",
+    "dist-js-bundle",
+    "dist-copy",
+    "favicon"
 ];
 
 const distTasks = [];
@@ -60,23 +69,19 @@ packages.forEach(theme => {
         config.projectName = packageName;
         config.taskPostfix = '-' + packageName.toLowerCase();
 
-        let projectDistTasks = [
-            'dist-copy' + config.taskPostfix,
-            'dist-css-bundle' + config.taskPostfix,
-            'dist-css-fusion' + config.taskPostfix,
-            // 'dist-js-bundle' + config.taskPostfix,
-            // 'dist-js-fusion' + config.taskPostfix,
-            'favicon' + config.taskPostfix,
-        ];
 
         const browserSync = require('browser-sync').create(config.projectName);
 
+        const projectDistTasks = [];
+
         for (let key in TASKS) {
-            require('./tasks/' + TASKS[key])({
+            const task = require('./tasks/' + TASKS[key])({
                 config: config,
-                browserSync: browserSync,
-                //groupedTasks: taskGroups
+                browserSync: browserSync
             });
+            if (task !== 'no-task' && DIST_TASKS.includes(TASKS[key])) {
+                projectDistTasks.push(TASKS[key] + config.taskPostfix);
+            }
         }
 
         gulp.task('dist' + config.taskPostfix, projectDistTasks);
