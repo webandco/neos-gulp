@@ -11,7 +11,6 @@ const maxBufferSize = 1024 * 1000;
 
 module.exports = function ({config}) {
     if (!(config.project.styles.lint)) {
-        log(colors.red('No scss files configured for lint - lint-scss'));
         return 'no-task';
     }
     //addToTaskGroups(opts.groupedTasks, 'lint-scss', opts.config.taskPostfix);

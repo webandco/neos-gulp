@@ -14,7 +14,6 @@ const modifyFile = require('gulp-modify-file');
 
 module.exports = function (opts) {
     if (!(opts.config.project.styles && opts.config.project.styles.fusion)) {
-        // gulpUtil.log(gulpUtil.colors.red('No css files configured - dist-css));
         return 'no-task';
     }
 

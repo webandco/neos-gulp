@@ -1,11 +1,12 @@
 {
     "extends": "eslint:recommended",
     "parserOptions": {
-        "ecmaVersion": 6,
+        "ecmaVersion": 8,
         "sourceType": "script"
     },
     "env": {
-        "browser": true
+        "browser": true,
+        "es6": true
     },
     "rules": {
         "semi": [ "error", "always" ],

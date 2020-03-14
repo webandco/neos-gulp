@@ -11,9 +11,10 @@ module.exports = function (opts) {
     //addToTaskGroups(opts.groupedTasks, 'hint-js', opts.config.taskPostfix);
 
     gulp.task('lint-js' + opts.config.taskPostfix, function () {
-        return gulp.src(opts.config.project.scripts.lint)
+        return gulp.src(opts.config.project.scripts.lint.sources)
             .pipe(eslint({
-                configFile: './eslint.json'
+                configFile: './eslint.json',
+                globals: opts.config.project.scripts.lint.globalVars
             }))
             .pipe(eslint.format())
     });

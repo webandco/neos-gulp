@@ -14,7 +14,6 @@ const replace = require('gulp-replace');
 
 module.exports = function (opts) {
     if (!(opts.config.project.styles && opts.config.project.styles.bundled)) {
-        // gulpUtil.log(gulpUtil.colors.red('No css files configured - dist-css));
         return 'no-task';
     }
 
@@ -57,6 +56,7 @@ module.exports = function (opts) {
             // .pipe(replace("../fonts", 'Styles/fonts'))
             .pipe(sourceMaps.write('./'))
             .pipe(gulpif(options.sourceMaps, sourceMaps.write('./')))
+            .pipe(gulp.dest(opts.config.paths.dist.styles))
             .pipe(opts.browserSync.stream({match: '**/*.css'}));
     });
 };

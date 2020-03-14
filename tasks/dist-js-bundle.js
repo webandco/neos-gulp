@@ -31,13 +31,13 @@ module.exports = function (opts) {
 
         return gulp.src(opts.config.project.scripts.bundled.sources)
             .pipe(gulpif(options.sourceMaps, sourceMaps.init()))
+            .pipe(concat(opts.config.project.scripts.bundled.filename ? opts.config.project.scripts.bundled.filename : 'webandco.js'))
             .pipe(babel({
                 presets: ['@babel/env'],
                 overrides: [{
                     ignore: polyfills
                 }]
             }))
-            .pipe(concat(opts.config.project.scripts.bundled.filename ? opts.config.project.scripts.bundled.filename : 'webandco.js'))
             .pipe(gulpif(options.minify, terser()))
             .pipe(gulpif(options.sourceMaps, sourceMaps.write('./')))
             .pipe(gulp.dest(opts.config.paths.dist.scripts));
