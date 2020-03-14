@@ -10,13 +10,14 @@ const cleanCSS = require('gulp-clean-css');
 const stripCssComments = require('gulp-strip-css-comments');
 const replace = require('gulp-replace');
 const modifyFile = require('gulp-modify-file');
+const { addToTaskGroups } = require('../functions');
 
 module.exports = function (opts) {
     if (!(opts.config.project.styles && opts.config.project.styles.fusion)) {
         return 'no-task';
     }
 
-    //addToTaskGroups(opts.groupedTasks, 'dist-css', opts.config.taskPostfix);
+    addToTaskGroups(opts.groupedTasks, 'dist-css-fusion', opts.config.taskPostfix);
 
     gulp.task('dist-css-fusion' + opts.config.taskPostfix, function () {
 

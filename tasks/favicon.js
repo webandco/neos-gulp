@@ -3,6 +3,7 @@
 const log = require('fancy-log');
 const colors = require('ansi-colors');
 const realFavicon = require('gulp-real-favicon');
+const { addToTaskGroups } = require('../functions');
 const gulp = require('gulp');
 const fs = require('fs');
 const path = require('path');
@@ -28,7 +29,7 @@ module.exports = function (opts) {
         return;
     }
 
-    //addToTaskGroups(opts.groupedTasks, 'favicon', opts.opts.config.taskPostfix);
+    addToTaskGroups(opts.groupedTasks, 'favicon', opts.config.taskPostfix);
 
     log('Favicon      :');
     const resourceJsonDir = path.dirname(opts.config.favicon.dataFile);

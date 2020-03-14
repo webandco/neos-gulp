@@ -53,6 +53,7 @@ const DIST_TASKS = [
 ];
 
 const distTasks = [];
+const taskGroups = {};
 
 packages.forEach(theme => {
     const packageName = theme.name;
@@ -77,7 +78,8 @@ packages.forEach(theme => {
         for (let key in TASKS) {
             const task = require('./tasks/' + TASKS[key])({
                 config: config,
-                browserSync: browserSync
+                browserSync: browserSync,
+                groupedTasks: taskGroups
             });
             if (task !== 'no-task' && DIST_TASKS.includes(TASKS[key])) {
                 projectDistTasks.push(TASKS[key] + config.taskPostfix);
@@ -97,9 +99,9 @@ if (distTasks.length > 0) {
 
 // console.log(taskGroups);
 
-// for (let task in taskGroups) {
-//     gulp.task(task, taskGroups[task]);
-// }
+for (let task in taskGroups) {
+    gulp.task(task, taskGroups[task]);
+}
 
 // use `gulp -T`
 // gulp.task('viz', require('gulp-task-graph-visualizer')());

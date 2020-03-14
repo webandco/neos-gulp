@@ -10,13 +10,14 @@ const autoprefixer = require('gulp-autoprefixer');
 const cleanCSS = require('gulp-clean-css');
 const stripCssComments = require('gulp-strip-css-comments');
 const replace = require('gulp-replace');
+const { addToTaskGroups } = require('../functions');
 
 module.exports = function (opts) {
     if (!(opts.config.project.styles && opts.config.project.styles.bundled)) {
         return 'no-task';
     }
 
-    //addToTaskGroups(opts.groupedTasks, 'dist-css', opts.config.taskPostfix);
+    addToTaskGroups(opts.groupedTasks, 'dist-css-bundle', opts.config.taskPostfix);
 
     gulp.task('dist-css-bundle' + opts.config.taskPostfix, function () {
 

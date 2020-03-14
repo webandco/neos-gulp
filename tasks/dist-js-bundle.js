@@ -7,13 +7,14 @@ const terser = require('gulp-terser');
 const sourceMaps = require('gulp-sourcemaps');
 const gulpif = require('gulp-if');
 const path = require('path');
+const { addToTaskGroups } = require('../functions');
 
 module.exports = function (opts) {
     if (!(opts.config.project.scripts && opts.config.project.scripts.bundled)) {
         return 'no-task';
     }
 
-    // addToTaskGroups(opts.groupedTasks, 'dist-js', opts.config.taskPostfix);
+    addToTaskGroups(opts.groupedTasks, 'dist-js-bundle', opts.config.taskPostfix);
 
     let sources = opts.config.project.scripts.bundled.sources;
     const polyfills = [];

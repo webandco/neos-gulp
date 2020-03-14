@@ -1,10 +1,11 @@
 'use strict';
 
 const gulp = require('gulp');
+const { addToTaskGroups } = require('../functions');
 
 module.exports = function (opts) {
 
-    // addToTaskGroups(opts.groupedTasks, 'watch', opts.config.taskPostfix);
+    addToTaskGroups(opts.groupedTasks, 'watch', opts.config.taskPostfix);
 
     gulp.task('watch' + opts.config.taskPostfix, function () {
         if (opts.config.project.styles.bundled && opts.config.project.styles.bundled.watch)

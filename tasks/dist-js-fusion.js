@@ -9,6 +9,7 @@ const sourceMaps = require('gulp-sourcemaps');
 const gulpif = require('gulp-if');
 const modifyFile = require('gulp-modify-file');
 const { paramCase } = require('change-case');
+const { addToTaskGroups } = require('../functions');
 const path = require('path');
 
 module.exports = function (opts) {
@@ -16,7 +17,7 @@ module.exports = function (opts) {
         return 'no-task';
     }
 
-    // addToTaskGroups(opts.groupedTasks, 'dist-js', opts.config.taskPostfix);
+    addToTaskGroups(opts.groupedTasks, 'dist-js-fusion', opts.config.taskPostfix);
 
     gulp.task('dist-js-fusion' + opts.config.taskPostfix, function () {
 

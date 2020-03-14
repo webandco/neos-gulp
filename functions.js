@@ -7,16 +7,12 @@ function readYaml(path) {
     return yaml.safeLoad(fs.readFileSync(path));
 }
 
-// function addToTaskGroups(groups, task, postfix) {
-//     if (undefined === groups[task]) {
-//          groups[task] = [];
-//     }
-//     groups[task].push(task + postfix);
-// }
-//
-// // function loadTasks() {
-// //     require("./task");
-// // }
+function addToTaskGroups(groups, task, postfix) {
+    if (!groups[task]) {
+         groups[task] = [];
+    }
+    groups[task].push(task + postfix);
+}
 
 function replacePlaceholder(code, packagePath, packageName, projectRoot) {
     let result = code;
@@ -34,5 +30,6 @@ function replacePlaceholder(code, packagePath, packageName, projectRoot) {
 
 module.exports = {
     readYaml,
-    replacePlaceholder
+    replacePlaceholder,
+    addToTaskGroups
 };
