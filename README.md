@@ -30,13 +30,14 @@ Please check the example file [Gulp.yaml.example](Gulp.yaml.example) for more in
 
 To exectute commands, please go to `./Build/Gulp`.
 ```
-- dist-css
-- dist-js
+- dist-css-bundle
+- dist-css-fusion
+- dist-js-bundle
+- dist-js-fusion
 - dist-copy
 - favicon
-- hint-js
+- lint-js
 - lint-scss
-- sass
 - server
 - watch
 ```
