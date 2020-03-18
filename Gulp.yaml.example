@@ -3,63 +3,93 @@
 # PACKAGE_PATH ... The path to the package, where this file is located
 # PACKAGE_NAME ... The name of the package, eg Vendor.Site
 # PROJECT_ROOT ... The Neos root path, also know as FLOW_PATH_ROOT
-# FAVICON_URL  ... The URL of the favicon, can only be used in Webandco.Gulp.config.favicon.replace.templateHrefPattern
 
 Webandco:
   Gulp:
     config:
       paths:
-        build:
-          styles: 'PACKAGE_PATH/Resources/Public/build'
         dist:
           styles: 'PACKAGE_PATH/Resources/Public/dist'
           scripts: 'PACKAGE_PATH/Resources/Public/dist'
-        source:
-          sass:
-            - 'PACKAGE_PATH/Resources/Public/scss/theme.scss'
-            - 'PACKAGE_PATH/Resources/Private/Fusion/**/*.scss'
-        watch:
-          sass:
-            - 'PACKAGE_PATH/Resources/Public/scss/**/*.scss'
-            - 'PACKAGE_PATH/Resources/Private/Fusion/**/*.scss'
+
       project:
-        css:
-          filename: 'style.css'
-          # remove all comments, @see https://github.com/sindresorhus/strip-css-comments#options
-          stripCssComments:
-            preserve: false
-        lint:
-          scss:
-            - 'PACKAGE_PATH/**/*.scss'
-        hint:
-          js:
-            - 'PACKAGE_PATH/Resources/Public/js/*.js'
-        cssFiles:
-          - 'PACKAGE_PATH/Resources/Public/build/webandco.css'
-        scriptFiles:
-          - 'PACKAGE_PATH/Resources/Public/js/base.js'
-    #    copyFiles:
-    #      - source: './node_modules/font-awesome/fonts/*'
-    #        dest: 'PACKAGE_PATH/Resources/Public/font'
+        styles:
+          fusion:
+            dependencies:
+              - 'PACKAGE_PATH/Resources/Public/scss/fusion-dependencies.scss'
+            sources:
+              - 'PACKAGE_PATH/Resources/Private/Fusion/**/*.scss'
+            watch:
+              - 'PACKAGE_PATH/Resources/Private/Fusion/**/*.scss'
+
+          bundled:
+            filename: 'webandco.min.css'
+            sources:
+              - 'PACKAGE_PATH/Resources/Public/scss/webandco.scss'
+            watch:
+              - 'PACKAGE_PATH/Resources/Public/scss/**/*.scss'
+
+          lint:
+            - 'PACKAGE_PATH/Resources/Private/Fusion/**/*.scss'
+            - 'PACKAGE_PATH/Resources/Public/scss/**/*.scss'
+
+          options:
+            sourceMaps: false
+            stripCssComments:
+              preserve: false
+
+        scripts:
+          fusion:
+            sources:
+              - 'PACKAGE_PATH/Resources/Private/Fusion/**/*.js'
+            watch:
+              - 'PACKAGE_PATH/Resources/Private/Fusion/**/*.js'
+
+          bundled:
+            filename: 'webandco.min.js'
+            sources:
+              - 'PACKAGE_PATH/Resources/Public/js/utils.js'
+              - 'PACKAGE_PATH/Resources/Public/js/base.js'
+            watch:
+              - 'PACKAGE_PATH/Resources/Public/js/**/*.js'
+
+          lint:
+            sources:
+              - 'PACKAGE_PATH/Resources/Public/js/**/*.js'
+              - 'PACKAGE_PATH/Resources/Private/**/*.js'
+            globalVars:
+              - 'add'
+
+          options:
+            minify: true
+            polyfills: true
+            sourceMaps: true
+
+        copyFiles:
+          - source: 'PROJECT_ROOT/node_modules/font-awesome/fonts/*'
+            dest: 'PACKAGE_PATH/Resources/Public/font'
+
       favicon:
         dataFile: 'PACKAGE_PATH/Resources/Private/Json/faviconData.json'
         dest: 'PACKAGE_PATH/Resources/Public/Images/favicons'
         masterPicture: 'PACKAGE_PATH/Resources/Private/Images/favicon-master.png'
         manifestName: 'PACKAGE_NAME'
         color:
-          background: '#ffffff'
-          theme: '#0099ff'
+          background: '#000000'
+          theme: '#000000'
         templateFile: 'PACKAGE_PATH/Resources/Private/Templates/Page/Favicon.html'
         replace:
           browserconfigPath: '/_Resources/Static/Packages/PACKAGE_NAME/Images/favicons'
           templatePath: 'Images/favicons'
-          templatePrefix: "{namespace webco=Webco\\Fou001\\NodeTypes\\ViewHelpers}\n\n"
+          # set prefix code, eg for view helpers
+          #          templatePrefix: "{namespace webco=Webco\\Gos001\\NodeTypes\\ViewHelpers}\n\n"
+          #          templateHrefPattern: "{webco:uri.static(path: 'FAVICON_URL', package: 'PACKAGE_NAME')}"
           templateHrefPattern: "{f:uri.resource(path: 'FAVICON_URL', package: 'PACKAGE_NAME')}"
+
       server:
         browserSync:
-          # set the proxy to the local Neos url
-          proxy: 'dev.local'
-          # if you use more thant one Gulp.yaml configurations choose different ports in each file, eg 3000, 3001, ...
+          proxy: 'neos.localbeach.net'
           port: 3000
           reload:
             - 'PACKAGE_PATH/Resources/Private/Fusion/**/*.fusion'
+            - 'PACKAGE_PATH/Resources/Private/Templates/**/*.html'

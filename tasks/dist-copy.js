@@ -1,19 +1,22 @@
 'use strict';
 
+const gulp = require('gulp');
+const log = require('fancy-log');
+const colors = require('ansi-colors');
+
 module.exports = function (opts) {
     if (!opts.config.project.copyFiles) {
-        // gulpUtil.log(gulpUtil.colors.red('No file to copy configured - dist-copy'));
-        return false;
+        return 'no-task';
     }
 
-    addToTaskGroups(opts.groupedTasks, 'dist-copy', opts.config.taskPostfix);
+    // addToTaskGroups(opts.groupedTasks, 'dist-copy', opts.config.taskPostfix);
 
     gulp.task('dist-copy' + opts.config.taskPostfix, function () {
-        gulpUtil.log(opts.config.projectName, ':');
-        for (var key in opts.config.project.copyFiles) {
-            gulpUtil.log('  ', opts.config.project.copyFiles[key].source, gulpUtil.colors.green('->'), opts.config.project.copyFiles[key].dest);
-            gulp.src(opts.config.project.copyFiles[key].source)
-                .pipe(gulp.dest(opts.config.project.copyFiles[key].dest));
+        log(opts.config.projectName, ':');
+        for (const entry of opts.config.project.copyFiles) {
+            log('  ', entry.source, colors.green('->'), entry.dest);
+            gulp.src(entry.source)
+                .pipe(gulp.dest(entry.dest));
         }
     });
 };
