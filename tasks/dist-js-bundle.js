@@ -10,7 +10,7 @@ const path = require('path');
 const { addToTaskGroups } = require('../functions');
 
 module.exports = function (opts) {
-    if (!(opts.config.project.scripts && opts.config.project.scripts.bundled)) {
+    if (!(opts.config.project.scripts && opts.config.project.scripts.bundled && opts.config.project.scripts.bundled.sources)) {
         return 'no-task';
     }
 

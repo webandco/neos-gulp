@@ -13,7 +13,7 @@ const { addToTaskGroups } = require('../functions');
 const path = require('path');
 
 module.exports = function (opts) {
-    if (!(opts.config.project.scripts && opts.config.project.scripts.fusion)) {
+    if (!(opts.config.project.scripts && opts.config.project.scripts.fusion && opts.config.project.scripts.fusion.sources)) {
         return 'no-task';
     }
 
