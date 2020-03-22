@@ -10,6 +10,7 @@ const cleanCSS = require('gulp-clean-css');
 const stripCssComments = require('gulp-strip-css-comments');
 const replace = require('gulp-replace');
 const modifyFile = require('gulp-modify-file');
+const path = require('path');
 const { addToTaskGroups } = require('../functions');
 
 module.exports = function (opts) {
@@ -62,6 +63,6 @@ module.exports = function (opts) {
             .pipe(replace("../../Images", '../Images'))
             // .pipe(replace("../fonts", 'Styles/fonts'))
             .pipe(gulpif(opts.config.project.styles.options.sourceMaps, sourceMaps.write('./')))
-            .pipe(gulp.dest(opts.config.paths.dist.styles));
+            .pipe(gulp.dest(path.join(opts.config.paths.dist.styles, 'Fusion')));
     });
 };

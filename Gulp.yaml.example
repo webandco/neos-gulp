@@ -9,8 +9,8 @@ Webandco:
     config:
       paths:
         dist:
-          styles: 'PACKAGE_PATH/Resources/Public/dist/Fusion'
-          scripts: 'PACKAGE_PATH/Resources/Public/dist/Fusion'
+          styles: 'PACKAGE_PATH/Resources/Public/dist'
+          scripts: 'PACKAGE_PATH/Resources/Public/dist'
 
       project:
         styles:
