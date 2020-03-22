@@ -45,6 +45,6 @@ module.exports = function (opts) {
             }))
             .pipe(gulpif(opts.config.project.scripts.options.minify, terser()))
             .pipe(gulpif(opts.config.project.scripts.options.sourceMaps, sourceMaps.write('./')))
-            .pipe(gulp.dest(opts.config.paths.dist.scripts));
+            .pipe(gulp.dest(path.join(opts.config.paths.dist.scripts, 'Fusion')));
     });
 };
