@@ -10,21 +10,33 @@ const autoprefixer = require('gulp-autoprefixer');
 const cleanCSS = require('gulp-clean-css');
 const stripCssComments = require('gulp-strip-css-comments');
 const replace = require('gulp-replace');
+const fs = require('fs');
+const path = require('path');
 const { addToTaskGroups } = require('../functions');
 
 module.exports = function (opts) {
-    if (!(opts.config.project.styles && opts.config.project.styles.bundled)) {
+    if (!(opts.config.project.styles && opts.config.project.styles.bundled && opts.config.project.styles.bundled.sources)) {
         return 'no-task';
     }
 
     addToTaskGroups(opts.groupedTasks, 'dist-css-bundle', opts.config.taskPostfix);
+
+    const includePaths = opts.config.project.styles.bundled.sources
+        .filter(src => fs.existsSync(src))
+        .map(src => path.dirname(src));
+
+    if (opts.config.project.styles.bundled.includePaths) {
+        includePaths.push(...opts.config.project.styles.bundled.includePaths);
+    }
 
     gulp.task('dist-css-bundle' + opts.config.taskPostfix, function () {
 
         return gulp.src(opts.config.project.styles.bundled.sources)
             .pipe(gulpif(opts.config.project.styles.options.sourceMaps, sourceMaps.init()))
             .pipe(concat(opts.config.project.styles.bundled.filename ? opts.config.project.styles.bundled.filename : 'style.css'))
-            .pipe(sass().on('error', sass.logError))
+            .pipe(sass({
+                includePaths: includePaths
+            }).on('error', sass.logError))
             .pipe(autoprefixer({
                 browsers: ['last 2 versions'],
                 cascade: false
@@ -52,7 +64,6 @@ module.exports = function (opts) {
             .pipe(replace("../../../Images", '../Images'))
             .pipe(replace("../../Images", '../Images'))
             // .pipe(replace("../fonts", 'Styles/fonts'))
-            .pipe(sourceMaps.write('./'))
             .pipe(gulpif(opts.config.project.styles.options.sourceMaps, sourceMaps.write('./')))
             .pipe(gulp.dest(opts.config.paths.dist.styles))
             .pipe(opts.browserSync.stream({match: '**/*.css'}));

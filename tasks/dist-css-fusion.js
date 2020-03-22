@@ -13,7 +13,7 @@ const modifyFile = require('gulp-modify-file');
 const { addToTaskGroups } = require('../functions');
 
 module.exports = function (opts) {
-    if (!(opts.config.project.styles && opts.config.project.styles.fusion)) {
+    if (!(opts.config.project.styles && opts.config.project.styles.fusion && opts.config.project.styles.fusion.sources)) {
         return 'no-task';
     }
 
@@ -21,14 +21,17 @@ module.exports = function (opts) {
 
     gulp.task('dist-css-fusion' + opts.config.taskPostfix, function () {
 
-        const dependencies = opts.config.project.styles.fusion.dependencies.reduce((acc, cur) => {
-            return acc + '@import "' + cur + '";\n';
-        }, '');
+        let dependencies;
+        if (opts.config.project.styles.fusion.dependencies) {
+            dependencies = opts.config.project.styles.fusion.dependencies.reduce((acc, cur) => {
+                return acc + '@import "' + cur + '";\n';
+            }, '');
+        }
 
         return gulp.src(opts.config.project.styles.fusion.sources)
             .pipe(gulpif(opts.config.project.styles.options.sourceMaps, sourceMaps.init()))
             .pipe(modifyFile((content, path, file) => {
-                return dependencies + content;
+                return dependencies ? dependencies + content : content;
             }))
             .pipe(sass().on('error', sass.logError))
             .pipe(autoprefixer({

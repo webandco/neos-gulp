@@ -9,8 +9,8 @@ Webandco:
     config:
       paths:
         dist:
-          styles: 'PACKAGE_PATH/Resources/Public/dist'
-          scripts: 'PACKAGE_PATH/Resources/Public/dist'
+          styles: 'PACKAGE_PATH/Resources/Public/dist/Fusion'
+          scripts: 'PACKAGE_PATH/Resources/Public/dist/Fusion'
 
       project:
         styles:
@@ -26,6 +26,8 @@ Webandco:
             filename: 'webandco.min.css'
             sources:
               - 'PACKAGE_PATH/Resources/Public/scss/webandco.scss'
+            includePaths:
+              - 'PACKAGE_PATH/Resources/Public/scss/'
             watch:
               - 'PACKAGE_PATH/Resources/Public/scss/**/*.scss'
 
