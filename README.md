@@ -35,6 +35,7 @@ To exectute commands, please go to `./Build/Gulp`.
 - dist-js-bundle
 - dist-js-fusion
 - dist-copy
+- dist-serviceworker
 - favicon
 - lint-js
 - lint-scss
