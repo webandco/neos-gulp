@@ -35,6 +35,7 @@ const TASKS = [
     "dist-css-bundle",
     "dist-js-fusion",
     "dist-js-bundle",
+    "dist-serviceworker",
     "dist-copy",
     "favicon",
     "lint-js",
