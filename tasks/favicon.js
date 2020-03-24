@@ -102,7 +102,13 @@ module.exports = function (opts) {
         if (fs.existsSync(manifestFile)) {
             let code = fs.readFileSync(manifestFile).toString();
             code = code.replace(/_PATH_\//gi, "");
-            fs.writeFileSync(manifestFile, code);
+
+            const webmanifest = JSON.parse(code);
+            webmanifest.scope = opts.config.favicon.scope || '/';
+            webmanifest.start_url = opts.config.favicon.startUrl || '/';
+            webmanifest.orientation = opts.config.favicon.orientation;
+
+                fs.writeFileSync(manifestFile, JSON.stringify(webmanifest, null, 2));
         } else {
             log(colors.red('Webmanifest file : ' + manifestFile + ' does not exist! Run task favicon-generate()'));
         }
