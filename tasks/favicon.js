@@ -106,6 +106,7 @@ module.exports = function (opts) {
             const webmanifest = JSON.parse(code);
             webmanifest.scope = opts.config.favicon.scope || '/';
             webmanifest.start_url = opts.config.favicon.startUrl || '/';
+            webmanifest.display = opts.config.favicon.display || 'browser';
             webmanifest.orientation = opts.config.favicon.orientation;
 
                 fs.writeFileSync(manifestFile, JSON.stringify(webmanifest, null, 2));

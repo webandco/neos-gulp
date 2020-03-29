@@ -84,6 +84,7 @@ Webandco:
         startUrl: '/'
         scope: '/'
         orientation: 'portrait'
+        display: 'standalone'
         color:
           background: '#000000'
           theme: '#000000'
