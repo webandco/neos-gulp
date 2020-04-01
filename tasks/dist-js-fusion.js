@@ -8,9 +8,11 @@ const terser = require('gulp-terser');
 const sourceMaps = require('gulp-sourcemaps');
 const gulpif = require('gulp-if');
 const modifyFile = require('gulp-modify-file');
-const { paramCase } = require('change-case');
+const { paramCase, pascalCase } = require('change-case');
+const {compile} = require('@riotjs/compiler');
 const { addToTaskGroups } = require('../functions');
 const path = require('path');
+const fs = require('fs');
 
 module.exports = function (opts) {
     if (!(opts.config.project.scripts && opts.config.project.scripts.fusion && opts.config.project.scripts.fusion.sources)) {
@@ -33,12 +35,32 @@ module.exports = function (opts) {
                 } else {
                     className = className[2];
                 }
-
                 if (!className) {
-                    log.error(colors.red('Error: ' + filePath + '   class name could not be automatically resolved. Please specify it as "const className = "className";'));
+                    log.error(colors.red('Error: ' + filePath + '   class name could not be automatically resolved. Please specify it as "const className = "className";"'));
                 }
 
-                return `document.querySelectorAll('.${className}').forEach(__node__ => { ${content} main(__node__)})`;
+                let riotSetup = '';
+                const riotFile = filePath.replace('.js', '.riot');
+                if (fs.existsSync(riotFile)) {
+                    let riotMountPoint = content.match(/(?<!\/\/\s)const\sriotMountPoint\s?=\s?("|')([A-Za-z-]+)("|');/);
+                    if (riotMountPoint) {
+                        const riotContent = fs.readFileSync(riotFile).toString();
+                        let {code} = compile(riotContent, {
+                            file: riotFile,
+                            scopedCss: false,
+                            brackets: ['{', '}'],
+                            comments: false
+                        });
+                        const riotComponentName = 'riotComponent' + pascalCase(riotMountPoint[2]);
+                        code = code.replace('export default', `const ${riotComponentName} =`);
+
+                        riotSetup = `${code} riot.register(\'${riotMountPoint[2]}\', ${riotComponentName});`;
+                    } else {
+                        log.warn(colors.yellow('Warning:' + filePath + '   Please specify a riot mount point as "const riotMountPoint = "mount-point";"'))
+                    }
+                }
+
+                return `${riotSetup}document.querySelectorAll('.${className}').forEach(__node__ => { ${content} main(__node__)})`;
             }))
             .pipe(babel({
                 presets: ['@babel/env']
