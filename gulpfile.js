@@ -40,6 +40,7 @@ const TASKS = [
     "clean-css",
     "clean-js",
     "clean",
+    "rebuild",
     "favicon",
     "lint-js",
     "lint-scss",
