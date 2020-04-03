@@ -104,10 +104,13 @@ module.exports = function (opts) {
             code = code.replace(/_PATH_\//gi, "");
 
             const webmanifest = JSON.parse(code);
-            webmanifest.scope = opts.config.favicon.scope || '/';
-            webmanifest.start_url = opts.config.favicon.startUrl || '/';
-            webmanifest.display = opts.config.favicon.display || 'browser';
-            webmanifest.orientation = opts.config.favicon.orientation;
+            webmanifest.scope = opts.config.favicon.webmanifest.scope || '/';
+            webmanifest.start_url = opts.config.favicon.webmanifest.startUrl || '/';
+            webmanifest.display = opts.config.favicon.webmanifest.display || 'browser';
+            webmanifest.orientation = opts.config.favicon.webmanifest.orientation;
+            webmanifest.short_name = opts.config.favicon.webmanifest.shortName || webmanifest.short_name;
+            webmanifest.description = opts.config.favicon.webmanifest.description;
+            webmanifest.lang = opts.config.favicon.webmanifest.lang;
 
                 fs.writeFileSync(manifestFile, JSON.stringify(webmanifest, null, 2));
         } else {
@@ -153,7 +156,7 @@ module.exports = function (opts) {
                     pictureAspect: 'noChange',
                     themeColor: opts.config.favicon.color.theme,
                     manifest: {
-                        name: opts.config.favicon.manifestName,
+                        name: opts.config.favicon.webmanifest.name,
                         display: 'browser',
                         orientation: 'notSet',
                         onConflict: 'override',
