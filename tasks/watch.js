@@ -20,6 +20,9 @@ module.exports = function (opts) {
         if (opts.config.project.scripts.fusion && opts.config.project.scripts.fusion.watch)
             gulp.watch([opts.config.project.scripts.fusion.watch], ['dist-js-fusion' + opts.config.taskPostfix, opts.browserSync.reload]);
 
+        if (opts.config.project.scripts.serviceWorker && opts.config.project.scripts.serviceWorker.source)
+            gulp.watch([opts.config.project.scripts.serviceWorker.source], ['dist-serviceworker' + opts.config.taskPostfix, opts.browserSync.reload]);
+
         if (opts.config.project.scripts.lint && opts.config.project.scripts.lint.sources)
             gulp.watch([opts.config.project.scripts.lint.sources], ['lint-js' + opts.config.taskPostfix]);
 

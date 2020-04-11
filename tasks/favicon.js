@@ -96,7 +96,7 @@ module.exports = function (opts) {
         done();
     });
 
-    gulp.task('favicon-replace-webmanifest' + opts.config.taskPostfix, function (done) {
+    gulp.task('favicon-replace-webmanifest' + opts.config.taskPostfix, function () {
         let manifestFile = opts.config.favicon.dest + "/site.webmanifest";
 
         if (fs.existsSync(manifestFile)) {
@@ -112,13 +112,13 @@ module.exports = function (opts) {
             webmanifest.description = opts.config.favicon.webmanifest.description;
             webmanifest.lang = opts.config.favicon.webmanifest.lang;
 
-                fs.writeFileSync(manifestFile, JSON.stringify(webmanifest, null, 2));
+            fs.writeFileSync(manifestFile, JSON.stringify(webmanifest, null, 2));
         } else {
             log(colors.red('Webmanifest file : ' + manifestFile + ' does not exist! Run task favicon-generate()'));
         }
     });
 
-    gulp.task('favicon-replace-browserconfig' + opts.config.taskPostfix, function (done) {
+    gulp.task('favicon-replace-browserconfig' + opts.config.taskPostfix, function () {
         let browserConfigFile = opts.config.favicon.dest + "/browserconfig.xml";
 
         if (fs.existsSync(browserConfigFile)) {
@@ -186,7 +186,7 @@ module.exports = function (opts) {
     // released a new Touch icon along with the latest version of iOS).
     // Run this task from time to time. Ideally, make it part of your
     // continuous integration system.
-    gulp.task('favicon-check-for-update' + opts.config.taskPostfix, function (done) {
+    gulp.task('favicon-check-for-update' + opts.config.taskPostfix, function () {
         let currentVersion = '';
 
         if (fs.existsSync(opts.config.favicon.dataFile)) {
