@@ -65,6 +65,10 @@ module.exports = function (opts) {
             .pipe(babel({
                 presets: ['@babel/env']
             }))
+            .on('error', function(err) {
+                log.error(err.message);
+                this.emit('end');
+            })
             .pipe(gulpif(opts.config.project.scripts.options.minify, terser()))
             .pipe(touchFusionFile())
             .pipe(gulpif(opts.config.project.scripts.options.sourceMaps, sourceMaps.write('./')))
