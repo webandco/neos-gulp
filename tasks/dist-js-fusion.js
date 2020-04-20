@@ -10,7 +10,7 @@ const gulpif = require('gulp-if');
 const modifyFile = require('gulp-modify-file');
 const { paramCase, pascalCase } = require('change-case');
 const {compile} = require('@riotjs/compiler');
-const { addToTaskGroups } = require('../functions');
+const { addToTaskGroups, touchFusionFile } = require('../functions');
 const path = require('path');
 const fs = require('fs');
 
@@ -66,6 +66,7 @@ module.exports = function (opts) {
                 presets: ['@babel/env']
             }))
             .pipe(gulpif(opts.config.project.scripts.options.minify, terser()))
+            .pipe(touchFusionFile())
             .pipe(gulpif(opts.config.project.scripts.options.sourceMaps, sourceMaps.write('./')))
             .pipe(gulp.dest(path.join(opts.config.paths.dist.scripts, 'Fusion')));
     });

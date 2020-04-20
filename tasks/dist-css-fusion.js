@@ -11,7 +11,7 @@ const stripCssComments = require('gulp-strip-css-comments');
 const replace = require('gulp-replace');
 const modifyFile = require('gulp-modify-file');
 const path = require('path');
-const { addToTaskGroups } = require('../functions');
+const { addToTaskGroups, touchFusionFile } = require('../functions');
 
 module.exports = function (opts) {
     if (!(opts.config.project.styles && opts.config.project.styles.fusion && opts.config.project.styles.fusion.sources)) {
@@ -62,6 +62,7 @@ module.exports = function (opts) {
             .pipe(replace("../../../Images", '../Images'))
             .pipe(replace("../../Images", '../Images'))
             // .pipe(replace("../fonts", 'Styles/fonts'))
+            .pipe(touchFusionFile())
             .pipe(gulpif(opts.config.project.styles.options.sourceMaps, sourceMaps.write('./')))
             .pipe(gulp.dest(path.join(opts.config.paths.dist.styles, 'Fusion')));
     });

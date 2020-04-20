@@ -1,6 +1,7 @@
 "use strict";
 const yaml = require('js-yaml');
 const fs = require('fs');
+const tap = require('gulp-tap');
 
 
 function readYaml(path) {
@@ -28,8 +29,19 @@ function replacePlaceholder(code, packagePath, packageName, projectRoot) {
     return result;
 }
 
+function touchFusionFile() {
+    return tap((file) => {
+       const fusionFile = file.path.replace(/(\.css|\.js)/, '.fusion');
+       if (fs.existsSync(fusionFile)) {
+           const time = new Date();
+           fs.utimesSync(fusionFile, time, time);
+       }
+    });
+}
+
 module.exports = {
     readYaml,
     replacePlaceholder,
-    addToTaskGroups
+    addToTaskGroups,
+    touchFusionFile
 };
