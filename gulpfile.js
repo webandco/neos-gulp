@@ -12,7 +12,8 @@ const projectRoot = path.join(__dirname, '..', '..');
 
 let packagePaths = [
     path.join(projectRoot, 'Packages/Theme/'),
-    path.join(projectRoot, 'DistributionPackages/')
+    path.join(projectRoot, 'DistributionPackages/'),
+    path.join(projectRoot, 'Source/')
 ];
 
 const packages = [];
