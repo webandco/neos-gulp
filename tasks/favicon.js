@@ -11,22 +11,22 @@ const path = require('path');
 module.exports = function (opts) {
     if (!opts.config.favicon) {
         log(colors.red('favicon not configured - favicon'));
-        return;
+        return 'no-task';
     }
 
     if (!opts.config.favicon.masterPicture) {
         log(colors.red('masterPicture not configured - favicon'));
-        return;
+	    return 'no-task';
     }
 
     if (!fs.existsSync(opts.config.favicon.masterPicture)) {
         log(colors.red('masterPicture file ' + opts.config.favicon.masterPicture + ' does not exists'));
-        return false;
+	    return 'no-task';
     }
 
     if (!opts.config.favicon.templateFile) {
         log(colors.red('templateFile is not configured - favicon'));
-        return;
+	    return 'no-task';
     }
 
     addToTaskGroups(opts.groupedTasks, 'favicon', opts.config.taskPostfix);

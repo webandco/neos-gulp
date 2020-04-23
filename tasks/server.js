@@ -4,7 +4,7 @@ const gulp = require('gulp');
 
 module.exports = function (opts) {
 
-    if (!opts.config.server && opts.config.server.browserSync) {
+    if (!(opts.config.server && opts.config.server.browserSync)) {
         return 'no-task';
     }
 
