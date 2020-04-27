@@ -20,6 +20,11 @@ module.exports = function (opts) {
 
     addToTaskGroups(opts.groupedTasks, 'dist-css-fusion', opts.config.taskPostfix);
 
+    const includePaths = [opts.config.projectRoot];
+    if (opts.config.project.styles.fusion.includePaths) {
+        includePaths.push(...opts.config.project.styles.fusion.includePaths);
+    }
+
     gulp.task('dist-css-fusion' + opts.config.taskPostfix, function () {
 
         let dependencies;
@@ -34,7 +39,9 @@ module.exports = function (opts) {
             .pipe(modifyFile((content, path, file) => {
                 return dependencies ? dependencies + content : content;
             }))
-            .pipe(sass().on('error', sass.logError))
+            .pipe(sass({
+                includePaths: includePaths
+            }).on('error', sass.logError))
             .pipe(autoprefixer({
                 browsers: ['last 2 versions'],
                 cascade: false

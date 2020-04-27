@@ -17,6 +17,8 @@ Webandco:
           fusion:
             dependencies:
               - 'PACKAGE_PATH/Resources/Public/scss/fusion-dependencies.scss'
+            includePaths:
+              - 'PROJECT_ROOT/node_modules'
             sources:
               - 'PACKAGE_PATH/Resources/Private/Fusion/**/*.scss'
             watch:

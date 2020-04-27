@@ -74,6 +74,7 @@ packages.forEach(theme => {
 
         let config = JSON.parse(yamlString).Webandco.Gulp.config;
 
+        config.projectRoot = projectRoot;
         config.projectName = packageName;
         config.taskPostfix = '-' + packageName.toLowerCase();
 
