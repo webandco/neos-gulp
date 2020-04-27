@@ -35,7 +35,14 @@ module.exports = function (opts) {
             .pipe(gulpif(opts.config.project.styles.options.sourceMaps, sourceMaps.init()))
             .pipe(concat(opts.config.project.styles.bundled.filename ? opts.config.project.styles.bundled.filename : 'style.css'))
             .pipe(sass({
-                includePaths: includePaths
+                includePaths: includePaths,
+                importer: (url, file, done) => {
+                    if (url.startsWith('~')) {
+                        const newUrl = path.join(opts.config.projectRoot, 'node_modules', url.substring(1));
+                        return done({ file: newUrl })
+                    }
+                    return done({ file: url })
+                }
             }).on('error', sass.logError))
             .pipe(autoprefixer({
                 browsers: ['last 2 versions'],

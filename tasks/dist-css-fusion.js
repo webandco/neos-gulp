@@ -40,7 +40,14 @@ module.exports = function (opts) {
                 return dependencies ? dependencies + content : content;
             }))
             .pipe(sass({
-                includePaths: includePaths
+                includePaths: includePaths,
+                importer: (url, file, done) => {
+                    if (url.startsWith('~')) {
+                        const newUrl = path.join(opts.config.projectRoot, 'node_modules', url.substring(1));
+                        return done({ file: newUrl })
+                    }
+                    return done({ file: url })
+                }
             }).on('error', sass.logError))
             .pipe(autoprefixer({
                 browsers: ['last 2 versions'],
