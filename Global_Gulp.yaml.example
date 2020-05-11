@@ -1,0 +1,13 @@
+# Example Gulp.yaml File for entire project, must be placed into 'PROJECT_ROOT/Configuration/Gulp.yaml'
+#
+# The following placeholder will be replaced by gulp
+#
+# PROJECT_ROOT ... The Neos root path, also know as FLOW_PATH_ROOT
+
+Webandco:
+  Gulp:
+    config:
+      packagePaths:
+        - 'PROJECT_ROOT/Themes/'
+      packages:
+        - 'PROJECT_ROOT/Packages/Application/Webco.Fusion'

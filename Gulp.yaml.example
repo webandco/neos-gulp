@@ -1,3 +1,5 @@
+# Example Gulp.yaml File for a Package
+#
 # The following placeholder will be replaced by gulp
 #
 # PACKAGE_PATH ... The path to the package, where this file is located

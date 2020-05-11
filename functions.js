@@ -22,10 +22,6 @@ function replacePlaceholder(code, packagePath, packageName, projectRoot) {
     result = result.replace(/PACKAGE_NAME/g, packageName);
     result = result.replace(/PROJECT_ROOT/g, projectRoot);
 
-    // @deprecated - will be removed. Use PACKAGE_PATH and PACKAGE_NAME instead
-    result = result.replace(/THEME_PATH/g, packagePath);
-    result = result.replace(/THEME_NAME/g, packageName);
-
     return result;
 }
 

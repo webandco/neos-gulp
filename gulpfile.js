@@ -11,18 +11,39 @@ const { readYaml, replacePlaceholder } = require('./functions');
 const projectRoot = path.join(__dirname, '..', '..');
 
 let packagePaths = [
-    path.join(projectRoot, 'Packages/Theme/'),
     path.join(projectRoot, 'DistributionPackages/'),
     path.join(projectRoot, 'Source/')
 ];
 
 const packages = [];
 
+const globalYamlConfigFile = path.join(projectRoot, 'Configuration', 'Gulp.yaml');
+if (fs.existsSync(globalYamlConfigFile)) {
+    const yamlConfig = readYaml(globalYamlConfigFile);
+    let yamlString = JSON.stringify(yamlConfig);
+    yamlString = replacePlaceholder(yamlString, undefined, undefined, projectRoot);
+    const globalConfig = JSON.parse(yamlString).Webandco.Gulp.config;
+
+    if (globalConfig.packagePaths) {
+        packagePaths = [...new Set([...packagePaths, ...globalConfig.packagePaths])];
+    }
+    if (globalConfig.packages) {
+        globalConfig.packages.forEach(p => {
+            if (fs.statSync(p).isDirectory()) {
+                packages.push({
+                    path: path.join(p, '..'),
+                    name: path.basename(p)
+                });
+            }
+        });
+    }
+}
+
 packagePaths.forEach(packagePath => {
     if (!fs.existsSync(packagePath)) return;
     const directoryContents = fs.readdirSync(packagePath);
     directoryContents.forEach(packageName => {
-        if (fs.statSync(path.join(packagePath, packageName)).isDirectory()) {
+        if (fs.statSync(path.join(packagePath, packageName)).isDirectory() && packages.findIndex(p => p.name === packageName) === -1) {
             packages.push({
                 name: packageName,
                 path: packagePath
