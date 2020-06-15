@@ -6,7 +6,7 @@ WARNING: This package is work in process!
 
 ## What does it do?
 
-Basically it iterates through your theme package and generates js and css dist files configured in several Gulp.yaml files.
+Basically it iterates through your site packages and generates js and css dist files configured in several Gulp.yaml files.
 
 Hint: The loading order of the package components is not relevant as long as you stick to the BEM pattern.
 
@@ -18,9 +18,7 @@ After the installation, change to the directory `./Build/Gulp` and run `npm inst
 
 In order to specify the entrypoint you have to create a `Configuration/Gulp.yaml` within your Neos package.
 
-Hint: As composer type for a theme package we use `"type": "neos-theme"`.
-
-Hint: If you have defined `copyFiles`, please execute `gulp dist-copy`
+Hint: As composer type for a theme package we use `"type": "neos-site"`.
 
 #### Example 
 
@@ -30,6 +28,9 @@ Please check the example file [Gulp.yaml.example](Gulp.yaml.example) for more in
 
 To exectute commands, please go to `./Build/Gulp`.
 ```
+- dist
+- clean
+- rebuild
 - dist-css-bundle
 - dist-css-fusion
 - dist-js-bundle
