@@ -1,12 +1,15 @@
 'use strict';
 
 const gulp = require('gulp');
+const { addToTaskGroups } = require('../functions');
 
 module.exports = function (opts) {
 
     if (!(opts.config.server && opts.config.server.browserSync)) {
         return 'no-task';
     }
+
+    addToTaskGroups(opts.groupedTasks, 'server', opts.config.taskPostfix);
 
     gulp.task('server' + opts.config.taskPostfix, ['watch' + opts.config.taskPostfix], function () {
         switch ("string") {
