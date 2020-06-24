@@ -18,9 +18,14 @@ function addToTaskGroups(groups, task, postfix) {
 function replacePlaceholder(code, packagePath, packageName, projectRoot) {
     let result = code;
 
-    result = result.replace(/PACKAGE_PATH/g, packagePath);
-    result = result.replace(/PACKAGE_NAME/g, packageName);
-    result = result.replace(/PROJECT_ROOT/g, projectRoot);
+    if (packagePath)
+        result = result.replace(/PACKAGE_PATH/g, packagePath);
+
+    if (packageName)
+        result = result.replace(/PACKAGE_NAME/g, packageName);
+
+    if (projectRoot)
+        result = result.replace(/PROJECT_ROOT/g, projectRoot);
 
     return result;
 }

@@ -2,6 +2,8 @@
 #
 # The following placeholder will be replaced by gulp
 #
+# PACKAGE_PATH ... The path to the package, where this file is located
+# PACKAGE_NAME ... The name of the package, eg Vendor.Site
 # PROJECT_ROOT ... The Neos root path, also know as FLOW_PATH_ROOT
 
 Webandco:
@@ -11,3 +13,33 @@ Webandco:
         - 'PROJECT_ROOT/Themes/'
       packages:
         - 'PROJECT_ROOT/Packages/Application/Webco.Fusion'
+
+      paths:
+        dist:
+          styles: 'PACKAGE_PATH/Resources/Public/dist'
+          scripts: 'PACKAGE_PATH/Resources/Public/dist'
+
+      project:
+        styles:
+          bundled:
+            filename: 'webandco.min.css'
+
+          options:
+            sourceMaps: false
+            stripCssComments:
+              preserve: false
+
+        script:
+          bundled:
+            filename: 'webandco.min.js'
+
+          lint:
+            globalVars:
+              - 'webcoNeosIsLive'
+              - 'webcoNeosIsDevelopment'
+              - 'Bem'
+
+          options:
+            minify: true
+            polyfills: true
+            sourceMaps: true

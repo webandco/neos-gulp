@@ -5,6 +5,7 @@ const path = require('path');
 const log = require('fancy-log');
 const colors = require('ansi-colors');
 const gulp = require('gulp');
+const deepmerge = require('deepmerge');
 const { readYaml, replacePlaceholder } = require('./functions');
 
 
@@ -16,13 +17,14 @@ let packagePaths = [
 ];
 
 const packages = [];
+let globalConfig;
 
 const globalYamlConfigFile = path.join(projectRoot, 'Configuration', 'Gulp.yaml');
 if (fs.existsSync(globalYamlConfigFile)) {
     const yamlConfig = readYaml(globalYamlConfigFile);
     let yamlString = JSON.stringify(yamlConfig);
     yamlString = replacePlaceholder(yamlString, undefined, undefined, projectRoot);
-    const globalConfig = JSON.parse(yamlString).Webandco.Gulp.config;
+    globalConfig = JSON.parse(yamlString).Webandco.Gulp.config;
 
     if (globalConfig.packagePaths) {
         packagePaths = [...new Set([...packagePaths, ...globalConfig.packagePaths])];
@@ -83,17 +85,17 @@ const DIST_TASKS = [
 const distTasks = [];
 const taskGroups = {};
 
-packages.forEach(theme => {
-    const packageName = theme.name;
-    const packagePath = path.join(theme.path, packageName);
+packages.forEach(p => {
+    const packageName = p.name;
+    const packagePath = path.join(p.path, packageName);
     const yamlConfigFile = path.join(packagePath, '/Configuration/Gulp.yaml');
 
     if (fs.existsSync(yamlConfigFile)) {
-        let yamlConfig = readYaml(yamlConfigFile);
+        let yamlConfig = readYaml(yamlConfigFile).Webandco.Gulp.config;
+        yamlConfig = deepmerge(globalConfig, yamlConfig);
         let yamlString = JSON.stringify(yamlConfig);
         yamlString = replacePlaceholder(yamlString, packagePath, packageName, projectRoot);
-
-        let config = JSON.parse(yamlString).Webandco.Gulp.config;
+        let config = JSON.parse(yamlString);
 
         config.projectRoot = projectRoot;
         config.projectName = packageName;

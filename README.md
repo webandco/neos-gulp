@@ -20,9 +20,14 @@ In order to specify the entrypoint you have to create a `Configuration/Gulp.yaml
 
 Hint: As composer type for a theme package we use `"type": "neos-site"`.
 
+### Global Gulp.yaml
+You can also specify a global Gulp.yaml file in `PROJECT_ROOT/Configuration/Gulp.yaml`. The config of this file will be merged into every other specified Gulp.yaml file. It is possible to remove global config in a project config file by setting the  config to `null`.
+
+Additionally, in this file you can add additional packages that should also be processed (some package in `Packages/Application` for example).
+
 #### Example 
 
-Please check the example file [Gulp.yaml.example](Gulp.yaml.example) for more information.
+Please check the example file [Gulp.yaml.example](Gulp.yaml.example) and [Global_Gulp.yaml.example](Global_Gulp.yaml.example) for more information.
 
 ## Commands
 
