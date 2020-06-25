@@ -7,6 +7,8 @@ const terser = require('gulp-terser');
 const sourceMaps = require('gulp-sourcemaps');
 const gulpif = require('gulp-if');
 const path = require('path');
+const { buildExternalHelpers } = require('@babel/core');
+const modifyFile = require('gulp-modify-file');
 const { addToTaskGroups } = require('../functions');
 
 module.exports = function (opts) {
@@ -27,11 +29,12 @@ module.exports = function (opts) {
 
     gulp.task('dist-js-bundle' + opts.config.taskPostfix, function () {
 
-        return gulp.src(opts.config.project.scripts.bundled.sources)
+        return gulp.src(sources)
             .pipe(gulpif(opts.config.project.scripts.options.sourceMaps, sourceMaps.init()))
             .pipe(concat(opts.config.project.scripts.bundled.filename ? opts.config.project.scripts.bundled.filename : 'webandco.js'))
             .pipe(babel({
                 presets: ['@babel/env'],
+                plugins: opts.config.project.scripts.options.externalBabelHelpers ? ["@babel/plugin-external-helpers"] : undefined,
                 overrides: [{
                     ignore: polyfills
                 }]
@@ -40,6 +43,9 @@ module.exports = function (opts) {
                 log.error(err.message);
                 this.emit('end');
             })
+            .pipe(gulpif(opts.config.project.scripts.options.externalBabelHelpers, modifyFile((content, filePath, file) => {
+                return buildExternalHelpers() + content;
+            })))
             .pipe(gulpif(opts.config.project.scripts.options.minify, terser()))
             .pipe(gulpif(opts.config.project.scripts.options.sourceMaps, sourceMaps.write('./')))
             .pipe(gulp.dest(opts.config.paths.dist.scripts))

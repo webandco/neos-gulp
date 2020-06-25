@@ -63,7 +63,8 @@ module.exports = function (opts) {
                 return `${riotSetup}document.querySelectorAll('.${className}').forEach(__node__ => { ${content} main(__node__)})`;
             }))
             .pipe(babel({
-                presets: ['@babel/env']
+                presets: ['@babel/env'],
+                plugins: opts.config.project.scripts.options.externalBabelHelpers ? ["@babel/plugin-external-helpers"] : undefined
             }))
             .on('error', function(err) {
                 log.error(err.message);
