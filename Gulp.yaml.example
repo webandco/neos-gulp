@@ -72,7 +72,11 @@ Webandco:
               - 'add'
 
           options:
+            # minify code useing terser (should always be used)
             minify: true
+            # add babel runtime helper functions to main bundle (useful if fusion js files contain many of them to prevent duplication of code)
+            externalBabelHelpers: false
+            # polyfills for older browsers
             polyfills: true
             sourceMaps: true
 

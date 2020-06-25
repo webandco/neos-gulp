@@ -42,4 +42,5 @@ Webandco:
           options:
             minify: true
             polyfills: true
+            externalBabelHelpers: false
             sourceMaps: true
