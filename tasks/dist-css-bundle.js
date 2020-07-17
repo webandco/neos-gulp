@@ -12,7 +12,7 @@ const stripCssComments = require('gulp-strip-css-comments');
 const replace = require('gulp-replace');
 const fs = require('fs');
 const path = require('path');
-const { addToTaskGroups } = require('../functions');
+const { addToTaskGroups, scssFileImporterFactory } = require('../functions');
 
 module.exports = function (opts) {
     if (!(opts.config.project.styles && opts.config.project.styles.bundled && opts.config.project.styles.bundled.sources)) {
@@ -36,13 +36,7 @@ module.exports = function (opts) {
             .pipe(concat(opts.config.project.styles.bundled.filename ? opts.config.project.styles.bundled.filename : 'style.css'))
             .pipe(sass({
                 includePaths: includePaths,
-                importer: (url, file, done) => {
-                    if (url.startsWith('~')) {
-                        const newUrl = path.join(opts.config.projectRoot, 'node_modules', url.substring(1));
-                        return done({ file: newUrl })
-                    }
-                    return done({ file: url })
-                }
+                importer: scssFileImporterFactory(opts.config)
             }).on('error', sass.logError))
             .pipe(autoprefixer({
                 browsers: ['last 2 versions'],
