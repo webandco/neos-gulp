@@ -29,6 +29,5 @@ module.exports = function (opts) {
             .pipe(gulpif(opts.config.project.scripts.options.minify, terser()))
             .pipe(gulpif(opts.config.project.scripts.options.sourceMaps, sourceMaps.write('./')))
             .pipe(gulp.dest(path.join(opts.config.paths.dist.scripts, 'Library')))
-            .pipe(opts.browserSync.stream({match: '**/*.js'}));
     });
 };
