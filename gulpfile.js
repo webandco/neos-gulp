@@ -60,6 +60,7 @@ const TASKS = [
     "dist-js-fusion",
     "dist-js-bundle",
     "dist-serviceworker",
+    "dist-js-library",
     "dist-copy",
     "clean-css",
     "clean-js",
@@ -77,6 +78,7 @@ const DIST_TASKS = [
     "dist-css-bundle",
     "dist-js-fusion",
     "dist-js-bundle",
+    "dist-js-library",
     "dist-serviceworker",
     "dist-copy",
     "favicon"

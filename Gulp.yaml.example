@@ -59,6 +59,12 @@ Webandco:
             watch:
               - 'PACKAGE_PATH/Resources/Public/js/**/*.js'
 
+          library:
+            sources:
+              - 'PACKAGE_PATH/Resources/Public/js/library/add.js'
+            watch:
+              - 'PACKAGE_PATH/Resources/Public/js/library/add.js'
+
           serviceWorker:
             source: 'PACKAGE_PATH/Resources/Public/js/service-worker.js'
             distPath: 'PROJECT_ROOT/Web'
