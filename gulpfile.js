@@ -7,6 +7,8 @@ const colors = require('ansi-colors');
 const gulp = require('gulp');
 const deepmerge = require('deepmerge');
 const { readYaml, replacePlaceholder } = require('./functions');
+const childProcess = require("child_process");
+const yaml = require('js-yaml');
 
 
 const projectRoot = path.join(__dirname, '..', '..');
@@ -38,6 +40,16 @@ if (fs.existsSync(globalYamlConfigFile)) {
                 });
             }
         });
+    }
+    if (globalConfig.flowCommand) {
+        let flowOutput = childProcess.execSync(globalConfig.flowCommand + ' configuration:show --type Settings --path Webco.Bem.fallback', {
+            cwd: projectRoot
+        }).toString();
+        flowOutput = flowOutput.substring(flowOutput.indexOf('\n') + 1);
+        const fallbackChainConfig = yaml.safeLoad(flowOutput);
+        if (fallbackChainConfig.enabled) {
+            globalConfig.fallbackChainConfig = fallbackChainConfig.site;
+        }
     }
 }
 

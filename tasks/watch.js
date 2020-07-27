@@ -34,5 +34,19 @@ module.exports = function (opts) {
 
         if (opts.config.favicon)
             gulp.watch([opts.config.favicon.dataFile, opts.config.favicon.masterPicture], ['favicon-create-template' + opts.config.taskPostfix]);
+
+        if (opts.config.fallbackChainConfig.hasOwnProperty(opts.config.projectName)) {
+            for (let fallback of opts.config.fallbackChainConfig[opts.config.projectName]) {
+                if (!opts.allConfigs[fallback]) {
+                    return;
+                }
+
+                if (opts.allConfigs[fallback].project.styles && opts.allConfigs[fallback].project.styles.fusion && opts.allConfigs[fallback].project.styles.fusion.watch)
+                    gulp.watch([opts.allConfigs[fallback].project.styles.fusion.watch], ['dist-css-fusion' + opts.allConfigs[fallback].taskPostfix, opts.browserSync.reload]);
+
+                if (opts.allConfigs[fallback].project.scripts && opts.allConfigs[fallback].project.scripts.fusion && opts.allConfigs[fallback].project.scripts.fusion.watch)
+                    gulp.watch([opts.allConfigs[fallback].project.scripts.fusion.watch], ['dist-js-fusion' + opts.allConfigs[fallback].taskPostfix, opts.browserSync.reload]);
+            }
+        }
     });
 };

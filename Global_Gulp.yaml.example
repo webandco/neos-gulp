@@ -9,6 +9,7 @@
 Webandco:
   Gulp:
     config:
+      flowCommand: './flow'
       packagePaths:
         - 'PROJECT_ROOT/Themes/'
       packages:
