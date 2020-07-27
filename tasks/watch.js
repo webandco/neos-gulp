@@ -35,7 +35,7 @@ module.exports = function (opts) {
         if (opts.config.favicon)
             gulp.watch([opts.config.favicon.dataFile, opts.config.favicon.masterPicture], ['favicon-create-template' + opts.config.taskPostfix]);
 
-        if (opts.config.fallbackChainConfig.hasOwnProperty(opts.config.projectName)) {
+        if (opts.config.fallbackChainConfig && opts.config.fallbackChainConfig.hasOwnProperty(opts.config.projectName)) {
             for (let fallback of opts.config.fallbackChainConfig[opts.config.projectName]) {
                 if (opts.allConfigs[fallback]) {
                     if (opts.allConfigs[fallback].project.styles && opts.allConfigs[fallback].project.styles.fusion && opts.allConfigs[fallback].project.styles.fusion.watch)
