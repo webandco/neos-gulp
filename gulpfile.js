@@ -7,6 +7,8 @@ const colors = require('ansi-colors');
 const gulp = require('gulp');
 const deepmerge = require('deepmerge');
 const { readYaml, replacePlaceholder } = require('./functions');
+const childProcess = require("child_process");
+const yaml = require('js-yaml');
 
 
 const projectRoot = path.join(__dirname, '..', '..');
@@ -38,6 +40,16 @@ if (fs.existsSync(globalYamlConfigFile)) {
                 });
             }
         });
+    }
+    if (globalConfig.flowCommand) {
+        let flowOutput = childProcess.execSync(globalConfig.flowCommand + ' configuration:show --type Settings --path Webco.Bem.fallback', {
+            cwd: projectRoot
+        }).toString();
+        flowOutput = flowOutput.substring(flowOutput.indexOf('\n') + 1);
+        const fallbackChainConfig = yaml.safeLoad(flowOutput);
+        if (fallbackChainConfig.enabled) {
+            globalConfig.fallbackChainConfig = fallbackChainConfig.site;
+        }
     }
 }
 
@@ -84,8 +96,7 @@ const DIST_TASKS = [
     "favicon"
 ];
 
-const distTasks = [];
-const taskGroups = {};
+const allConfigs = {};
 
 packages.forEach(p => {
     const packageName = p.name;
@@ -103,28 +114,36 @@ packages.forEach(p => {
         config.projectName = packageName;
         config.taskPostfix = '-' + packageName.toLowerCase();
 
+        allConfigs[packageName] = config;
 
-        const browserSync = require('browser-sync').create(config.projectName);
-
-        const projectDistTasks = [];
-
-        for (let key in TASKS) {
-            const task = require('./tasks/' + TASKS[key])({
-                config: config,
-                browserSync: browserSync,
-                groupedTasks: taskGroups
-            });
-            if (task !== 'no-task' && DIST_TASKS.includes(TASKS[key])) {
-                projectDistTasks.push(TASKS[key] + config.taskPostfix);
-            }
-        }
-
-        gulp.task('dist' + config.taskPostfix, projectDistTasks);
-        distTasks.push('dist' + config.taskPostfix);
     } else {
         log(colors.gray(packageName + ' - Package has no Gulp.yaml file'));
     }
 });
+
+const distTasks = [];
+const taskGroups = {};
+
+for (let packageConfig in allConfigs) {
+    const browserSync = require('browser-sync').create(allConfigs[packageConfig].projectName);
+
+    const projectDistTasks = [];
+
+    for (let key in TASKS) {
+        const task = require('./tasks/' + TASKS[key])({
+            allConfigs: allConfigs,
+            config: allConfigs[packageConfig],
+            browserSync: browserSync,
+            groupedTasks: taskGroups
+        });
+        if (task !== 'no-task' && DIST_TASKS.includes(TASKS[key])) {
+            projectDistTasks.push(TASKS[key] + allConfigs[packageConfig].taskPostfix);
+        }
+    }
+
+    gulp.task('dist' + allConfigs[packageConfig].taskPostfix, projectDistTasks);
+    distTasks.push('dist' + allConfigs[packageConfig].taskPostfix);
+}
 
 if (distTasks.length > 0) {
     gulp.task('dist', distTasks);
