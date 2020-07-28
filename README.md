@@ -40,6 +40,7 @@ To exectute commands, please go to `./Build/Gulp`.
 - dist-css-fusion
 - dist-js-bundle
 - dist-js-fusion
+- dist-js-library
 - dist-copy
 - dist-serviceworker
 - favicon
