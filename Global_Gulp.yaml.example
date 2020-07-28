@@ -2,7 +2,7 @@
 #
 # The following placeholder will be replaced by gulp
 #
-# PACKAGE_PATH ... The path to the package, where this file is located
+# PACKAGE_PATH ... The path to the packages, where the PACKAGE_NAME will be added automatically
 # PACKAGE_NAME ... The name of the package, eg Vendor.Site
 # PROJECT_ROOT ... The Neos root path, also know as FLOW_PATH_ROOT
 
