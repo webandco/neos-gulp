@@ -28,10 +28,10 @@ if (fs.existsSync(globalYamlConfigFile)) {
     yamlString = replacePlaceholder(yamlString, undefined, undefined, projectRoot);
     globalConfig = JSON.parse(yamlString).Webandco.Gulp.config;
 
-    if (globalConfig.packagePaths) {
+    if (globalConfig && globalConfig.packagePaths) {
         packagePaths = [...new Set([...packagePaths, ...globalConfig.packagePaths])];
     }
-    if (globalConfig.packages) {
+    if (globalConfig && globalConfig.packages) {
         globalConfig.packages.forEach(p => {
             if (fs.statSync(p).isDirectory()) {
                 packages.push({
@@ -41,7 +41,7 @@ if (fs.existsSync(globalYamlConfigFile)) {
             }
         });
     }
-    if (globalConfig.flowCommand) {
+    if (globalConfig && globalConfig.flowCommand) {
         let flowOutput = childProcess.execSync(globalConfig.flowCommand + ' configuration:show --type Settings --path Webco.Bem.fallback', {
             cwd: projectRoot
         }).toString();
