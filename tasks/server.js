@@ -11,7 +11,7 @@ module.exports = function (opts) {
 
     addToTaskGroups(opts.groupedTasks, 'server', opts.config.taskPostfix);
 
-    gulp.task('server' + opts.config.taskPostfix, ['watch' + opts.config.taskPostfix], function () {
+    gulp.task('server' + opts.config.taskPostfix, gulp.parallel('watch' + opts.config.taskPostfix, function () {
         switch ("string") {
             case typeof opts.config.server.browserSync.proxy:
                 opts.browserSync.init({
@@ -30,5 +30,5 @@ module.exports = function (opts) {
         }
 
         gulp.watch(opts.config.server.browserSync.reload).on('change', opts.browserSync.reload);
-    });
+    }));
 };

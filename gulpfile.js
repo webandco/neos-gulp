@@ -77,12 +77,12 @@ const TASKS = [
     "clean-css",
     "clean-js",
     "clean",
-    "rebuild",
+    // "rebuild",
     "favicon",
     "lint-js",
     "lint-scss",
-    "server",
-    "watch"
+    "watch",
+    "server"
 ];
 
 const DIST_TASKS = [
@@ -141,21 +141,16 @@ for (let packageConfig in allConfigs) {
         }
     }
 
-    gulp.task('dist' + allConfigs[packageConfig].taskPostfix, projectDistTasks);
+    gulp.task('dist' + allConfigs[packageConfig].taskPostfix, gulp.parallel(projectDistTasks));
     distTasks.push('dist' + allConfigs[packageConfig].taskPostfix);
 }
 
 if (distTasks.length > 0) {
-    gulp.task('dist', distTasks);
+    gulp.task('dist', gulp.parallel(distTasks));
 }
-
-// console.log(taskGroups);
 
 for (let task in taskGroups) {
-    gulp.task(task, taskGroups[task]);
+    gulp.task(task, gulp.parallel(taskGroups[task]));
 }
 
-// use `gulp -T`
-// gulp.task('viz', require('gulp-task-graph-visualizer')());
-
-gulp.task('default', ['watch']);
+gulp.task('default', gulp.parallel(['watch']));

@@ -31,7 +31,7 @@ module.exports = function (opts) {
 
     gulp.task('dist-css-bundle' + opts.config.taskPostfix, function () {
 
-        return gulp.src(opts.config.project.styles.bundled.sources)
+        return gulp.src(opts.config.project.styles.bundled.sources, {allowEmpty: true})
             .pipe(gulpif(opts.config.project.styles.options.sourceMaps, sourceMaps.init()))
             .pipe(concat(opts.config.project.styles.bundled.filename ? opts.config.project.styles.bundled.filename : 'style.css'))
             .pipe(sass({
