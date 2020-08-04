@@ -84,10 +84,25 @@ function scssFileImporterFactory(config) {
     }
 }
 
+function rimraf(dir_path) {
+    if (fs.existsSync(dir_path)) {
+        fs.readdirSync(dir_path).forEach(entry => {
+            const entry_path = path.join(dir_path, entry);
+            if (fs.lstatSync(entry_path).isDirectory()) {
+                rimraf(entry_path);
+            } else {
+                fs.unlinkSync(entry_path);
+            }
+        });
+        fs.rmdirSync(dir_path);
+    }
+}
+
 module.exports = {
     readYaml,
     replacePlaceholder,
     addToTaskGroups,
     touchFusionFile,
-    scssFileImporterFactory
+    scssFileImporterFactory,
+    rimraf
 };
