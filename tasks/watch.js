@@ -38,7 +38,7 @@ module.exports = function (opts) {
             gulp.watch(opts.config.project.styles.lint, gulp.series(['lint-scss' + opts.config.taskPostfix]));
 
         if (opts.config.favicon)
-            gulp.watch(opts.config.favicon.dataFile, opts.config.favicon.masterPicture, gulp.series(['favicon-create-template' + opts.config.taskPostfix]));
+            gulp.watch([opts.config.favicon.dataFile, opts.config.favicon.masterPicture], gulp.series(['favicon-create-template' + opts.config.taskPostfix]));
 
         if (opts.config.fallbackChainConfig && opts.config.fallbackChainConfig.hasOwnProperty(opts.config.projectName)) {
             for (let fallback of opts.config.fallbackChainConfig[opts.config.projectName]) {
