@@ -77,23 +77,13 @@ const TASKS = [
     "clean-css",
     "clean-js",
     "clean",
-    "rebuild",
     "favicon",
+    "dist",
     "lint-js",
     "lint-scss",
-    "server",
-    "watch"
-];
-
-const DIST_TASKS = [
-    "dist-css-fusion",
-    "dist-css-bundle",
-    "dist-js-fusion",
-    "dist-js-bundle",
-    "dist-js-library",
-    "dist-serviceworker",
-    "dist-copy",
-    "favicon"
+    "rebuild",
+    "watch",
+    "server"
 ];
 
 const allConfigs = {};
@@ -121,41 +111,23 @@ packages.forEach(p => {
     }
 });
 
-const distTasks = [];
 const taskGroups = {};
 
 for (let packageConfig in allConfigs) {
     const browserSync = require('browser-sync').create(allConfigs[packageConfig].projectName);
 
-    const projectDistTasks = [];
-
     for (let key in TASKS) {
-        const task = require('./tasks/' + TASKS[key])({
+        require('./tasks/' + TASKS[key])({
             allConfigs: allConfigs,
             config: allConfigs[packageConfig],
             browserSync: browserSync,
             groupedTasks: taskGroups
         });
-        if (task !== 'no-task' && DIST_TASKS.includes(TASKS[key])) {
-            projectDistTasks.push(TASKS[key] + allConfigs[packageConfig].taskPostfix);
-        }
     }
-
-    gulp.task('dist' + allConfigs[packageConfig].taskPostfix, projectDistTasks);
-    distTasks.push('dist' + allConfigs[packageConfig].taskPostfix);
 }
-
-if (distTasks.length > 0) {
-    gulp.task('dist', distTasks);
-}
-
-// console.log(taskGroups);
 
 for (let task in taskGroups) {
-    gulp.task(task, taskGroups[task]);
+    gulp.task(task, gulp.parallel(taskGroups[task]));
 }
 
-// use `gulp -T`
-// gulp.task('viz', require('gulp-task-graph-visualizer')());
-
-gulp.task('default', ['watch']);
+gulp.task('default', gulp.parallel(['watch']));

@@ -29,7 +29,7 @@ module.exports = function (opts) {
 
     gulp.task('dist-js-bundle' + opts.config.taskPostfix, function () {
 
-        return gulp.src(sources)
+        return gulp.src(sources, {allowEmpty: true})
             .pipe(gulpif(opts.config.project.scripts.options.sourceMaps, sourceMaps.init()))
             .pipe(concat(opts.config.project.scripts.bundled.filename ? opts.config.project.scripts.bundled.filename : 'webandco.js'))
             .pipe(babel({

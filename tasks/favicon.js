@@ -96,7 +96,7 @@ module.exports = function (opts) {
         done();
     });
 
-    gulp.task('favicon-replace-webmanifest' + opts.config.taskPostfix, function () {
+    gulp.task('favicon-replace-webmanifest' + opts.config.taskPostfix, function (cb) {
         let manifestFile = opts.config.favicon.dest + "/site.webmanifest";
 
         if (fs.existsSync(manifestFile)) {
@@ -116,9 +116,10 @@ module.exports = function (opts) {
         } else {
             log(colors.red('Webmanifest file : ' + manifestFile + ' does not exist! Run task favicon-generate()'));
         }
+        cb();
     });
 
-    gulp.task('favicon-replace-browserconfig' + opts.config.taskPostfix, function () {
+    gulp.task('favicon-replace-browserconfig' + opts.config.taskPostfix, function (cb) {
         let browserConfigFile = opts.config.favicon.dest + "/browserconfig.xml";
 
         if (fs.existsSync(browserConfigFile)) {
@@ -131,6 +132,7 @@ module.exports = function (opts) {
         } else {
             log(colors.red('Browserconfig file ' + browserConfigFile + ' does not exist! Run task favicon-generate()'));
         }
+        cb();
     });
 
     // Generate the icons. This task takes a few seconds to complete.
@@ -175,9 +177,11 @@ module.exports = function (opts) {
             },
             markupFile: opts.config.favicon.dataFile
         }, function () {
-            gulp.start('favicon-create-template' + opts.config.taskPostfix);
-            gulp.start('favicon-replace-webmanifest' + opts.config.taskPostfix);
-            gulp.start('favicon-replace-browserconfig' + opts.config.taskPostfix);
+            gulp.series(
+                gulp.task('favicon-create-template' + opts.config.taskPostfix),
+                gulp.task('favicon-replace-webmanifest' + opts.config.taskPostfix),
+                gulp.task('favicon-replace-browserconfig' + opts.config.taskPostfix),
+            )();
             done();
         });
     });
@@ -186,7 +190,7 @@ module.exports = function (opts) {
     // released a new Touch icon along with the latest version of iOS).
     // Run this task from time to time. Ideally, make it part of your
     // continuous integration system.
-    gulp.task('favicon-check-for-update' + opts.config.taskPostfix, function () {
+    gulp.task('favicon-check-for-update' + opts.config.taskPostfix, function (cb) {
         let currentVersion = '';
 
         if (fs.existsSync(opts.config.favicon.dataFile)) {
@@ -196,12 +200,11 @@ module.exports = function (opts) {
         log('Favicon: Checking Version ', colors.green(currentVersion));
         realFavicon.checkForUpdates(currentVersion, function (err) {
             if (err !== undefined) {
-                gulp.start('favicon-generate' + opts.config.taskPostfix);
+                gulp.series(gulp.task('favicon-generate' + opts.config.taskPostfix))();
             }
         });
+        cb();
     });
 
-    gulp.task('favicon' + opts.config.taskPostfix, ['favicon-check-for-update' + opts.config.taskPostfix], function (done) {
-        done();
-    });
+    gulp.task('favicon' + opts.config.taskPostfix, gulp.parallel(['favicon-check-for-update' + opts.config.taskPostfix]));
 };
