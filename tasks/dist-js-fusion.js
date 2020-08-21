@@ -32,6 +32,9 @@ module.exports = function (opts) {
                     if (dirname.endsWith('Section')) {
                         className = 'section-' + paramCase(path.basename(filePath).replace('.js', ''));
                     }
+                    if (dirname.endsWith('Block')) {
+                        className = paramCase(path.basename(filePath).replace('.js', ''));
+                    }
                 } else {
                     className = className[2];
                 }
