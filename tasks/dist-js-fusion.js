@@ -26,7 +26,7 @@ module.exports = function (opts) {
         return gulp.src(opts.config.project.scripts.fusion.sources)
             .pipe(gulpif(opts.config.project.scripts.options.sourceMaps, sourceMaps.init()))
             .pipe(modifyFile((content, filePath, file) => {
-                let className = content.match(/(?<!\/\/\s)const\sclassName\s?=\s?("|')([A-Za-z-]+)("|');/);
+                let className = content.match(/(?<!\/\/\s)const\sclassName\s?=\s?("|')([0-9A-Za-z-]+)("|');/);
                 if (!className) {
                     const dirname = path.dirname(filePath);
                     if (dirname.endsWith('Section')) {
@@ -45,7 +45,7 @@ module.exports = function (opts) {
                 let riotSetup = '';
                 const riotFile = filePath.replace('.js', '.riot');
                 if (fs.existsSync(riotFile)) {
-                    let riotMountPoint = content.match(/(?<!\/\/\s)const\sriotMountPoint\s?=\s?("|')([A-Za-z-]+)("|');/);
+                    let riotMountPoint = content.match(/(?<!\/\/\s)const\sriotMountPoint\s?=\s?("|')([0-9A-Za-z-]+)("|');/);
                     if (riotMountPoint) {
                         const riotContent = fs.readFileSync(riotFile).toString();
                         let {code} = compile(riotContent, {
