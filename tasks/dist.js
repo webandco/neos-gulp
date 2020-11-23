@@ -11,6 +11,7 @@ module.exports = function (opts) {
     const DIST_TASKS = [
         "dist-css-fusion",
         "dist-css-bundle",
+        "dist-css-library",
         "dist-js-fusion",
         "dist-js-bundle",
         "dist-js-library",

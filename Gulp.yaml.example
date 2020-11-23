@@ -35,6 +35,16 @@ Webandco:
             watch:
               - 'PACKAGE_PATH/Resources/Public/scss/**/*.scss'
 
+          library:
+            dependencies:
+              - 'PACKAGE_PATH/Resources/Public/scss/fusion-dependencies.scss'
+            includePaths:
+              - 'PROJECT_ROOT/node_modules'
+            sources:
+              - 'PACKAGE_PATH/Resources/Public/scss/library/button.scss'
+            watch:
+              - 'PACKAGE_PATH/Resources/Public/scss/library/button.scss'
+
           lint:
             - 'PACKAGE_PATH/Resources/Private/Fusion/**/*.scss'
             - 'PACKAGE_PATH/Resources/Public/scss/**/*.scss'
@@ -78,7 +88,7 @@ Webandco:
               - 'add'
 
           options:
-            # minify code useing terser (should always be used)
+            # minify code using terser (should always be used)
             minify: true
             # add babel runtime helper functions to main bundle (useful if fusion js files contain many of them to prevent duplication of code)
             externalBabelHelpers: false

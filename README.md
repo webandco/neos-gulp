@@ -38,6 +38,7 @@ To exectute commands, please go to `./Build/Gulp`.
 - rebuild
 - dist-css-bundle
 - dist-css-fusion
+- dist-css-library
 - dist-js-bundle
 - dist-js-fusion
 - dist-js-library
@@ -49,10 +50,6 @@ To exectute commands, please go to `./Build/Gulp`.
 - server
 - watch
 ```
-
-Known issues
-------------
-If you have the watcher running and you create new scss or js files, you have to restart the watch or server task in order to consider them for processing. 
 
 Acknowledgments
 ---------------

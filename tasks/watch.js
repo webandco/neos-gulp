@@ -19,6 +19,9 @@ module.exports = function (opts) {
         if (opts.config.project.styles && opts.config.project.styles.fusion && opts.config.project.styles.fusion.watch)
             gulp.watch(opts.config.project.styles.fusion.watch, gulp.series(['dist-css-fusion' + opts.config.taskPostfix, browserSyncReload]));
 
+        if (opts.config.project.styles && opts.config.project.styles.library && opts.config.project.styles.library.watch)
+            gulp.watch(opts.config.project.styles.library.watch, gulp.series(['dist-css-library' + opts.config.taskPostfix, browserSyncReload]));
+
         if (opts.config.project.scripts && opts.config.project.scripts.bundled && opts.config.project.scripts.bundled.watch)
             gulp.watch(opts.config.project.scripts.bundled.watch, gulp.series(['dist-js-bundle' + opts.config.taskPostfix]));
 
