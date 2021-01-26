@@ -4,7 +4,6 @@ const fs = require('fs');
 const tap = require('gulp-tap');
 const path = require('path');
 
-
 function readYaml(path) {
     return yaml.safeLoad(fs.readFileSync(path));
 }
@@ -84,6 +83,16 @@ function scssFileImporterFactory(config) {
     }
 }
 
+function transformResourceUrls(content) {
+    return content.replace(/url\(['"]?resource:\/\/(.*)\/(Public|Private)\/(.*)['"]?\);?/g, (match, pack, type, path) => {
+        if (type === 'Private') {
+            throw new Error(match + ' cannot be imported, you can only use Public Resources in SCSS.')
+        }
+
+        return `url('/_Resources/Static/Packages/${pack}/${path}');`
+    });
+}
+
 function rimraf(dir_path) {
     if (fs.existsSync(dir_path)) {
         fs.readdirSync(dir_path).forEach(entry => {
@@ -104,5 +113,6 @@ module.exports = {
     addToTaskGroups,
     touchFusionFile,
     scssFileImporterFactory,
+    transformResourceUrls,
     rimraf
 };

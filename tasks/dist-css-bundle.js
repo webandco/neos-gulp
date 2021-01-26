@@ -9,10 +9,10 @@ const gcmq = require('gulp-group-css-media-queries');
 const autoprefixer = require('gulp-autoprefixer');
 const cleanCSS = require('gulp-clean-css');
 const stripCssComments = require('gulp-strip-css-comments');
-const replace = require('gulp-replace');
 const fs = require('fs');
 const path = require('path');
-const { addToTaskGroups, scssFileImporterFactory } = require('../functions');
+const modifyFile = require('gulp-modify-file');
+const { addToTaskGroups, scssFileImporterFactory, transformResourceUrls } = require('../functions');
 
 module.exports = function (opts) {
     if (!(opts.config.project.styles && opts.config.project.styles.bundled && opts.config.project.styles.bundled.sources)) {
@@ -59,12 +59,9 @@ module.exports = function (opts) {
                 // console.log(details.name + ': ' + details.stats.minifiedSize + 'kb minified');
             }))
             .pipe(stripCssComments(opts.config.project.styles.options.stripCssComments))
-            // .pipe(gulp.dest(paths.dist.styles)) // needed here for header()
-            // .pipe(header(project.banner))
-            // replace in the correct sass path with dist relative path
-            .pipe(replace("../../../Images", '../Images'))
-            .pipe(replace("../../Images", '../Images'))
-            // .pipe(replace("../fonts", 'Styles/fonts'))
+            .pipe(modifyFile((content, path, file) => {
+                return transformResourceUrls(content);
+            }))
             .pipe(gulpif(opts.config.project.styles.options.sourceMaps, sourceMaps.write('./')))
             .pipe(gulp.dest(opts.config.paths.dist.styles))
             .pipe(opts.browserSync.stream({match: '**/*.css'}));
