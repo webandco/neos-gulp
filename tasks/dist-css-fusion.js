@@ -48,19 +48,8 @@ module.exports = function (opts) {
             }))
             .pipe(gcmq())
             .pipe(cleanCSS({
-                advanced: false,
-                aggressiveMerging: false,
-                // format: 'beautify',
-                keepSpecialComments: false,
-                processImportFrom: ['!fonts.googleapis.com'], // a list of @import rules, can be ['all'] (default), ['local'], ['remote'], or a blacklisted path e.g. ['!fonts.googleapis.com']
-                // target: 'Styles/img',
-                // rebase: true,
-                // debug: true,
-                // level: 2 // mp: check if it works - removes duplicates
-            }, function (details) {
-                // console.log('CSS minified efficiency ' + (Math.round(details.stats.efficiency * 10000) / 100) + '%');
-                // console.log(details.name + ': ' + details.stats.originalSize + 'kb source');
-                // console.log(details.name + ': ' + details.stats.minifiedSize + 'kb minified');
+                level: 2,
+                inline: false
             }))
             .pipe(stripCssComments(opts.config.project.styles.options.stripCssComments))
             .pipe(modifyFile((content, path, file) => {
