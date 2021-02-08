@@ -5,8 +5,8 @@ const eslint = require('gulp-eslint');
 const { addToTaskGroups } = require('../functions');
 
 module.exports = function (opts) {
-    if (!(opts.config.project.scripts && opts.config.project.scripts.lint)) {
-        return;
+    if (!(opts.config.project && opts.config.project.scripts && opts.config.project.scripts.lint)) {
+        return 'no-task';
     }
 
     addToTaskGroups(opts.groupedTasks, 'lint-js', opts.config.taskPostfix);

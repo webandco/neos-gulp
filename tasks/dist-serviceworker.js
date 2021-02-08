@@ -9,7 +9,7 @@ const rename = require("gulp-rename");
 
 
 module.exports = function (opts) {
-    if (!(opts.config.project.scripts && opts.config.project.scripts.serviceWorker && opts.config.project.scripts.serviceWorker.source)) {
+    if (!(opts.config.project && opts.config.project.scripts && opts.config.project.scripts.serviceWorker && opts.config.project.scripts.serviceWorker.source)) {
         return 'no-task';
     }
 

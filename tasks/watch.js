@@ -13,31 +13,31 @@ module.exports = function (opts) {
             cb();
         };
 
-        if (opts.config.project.styles && opts.config.project.styles.bundled && opts.config.project.styles.bundled.watch)
+        if (opts.config.project && opts.config.project.styles && opts.config.project.styles.bundled && opts.config.project.styles.bundled.watch)
             gulp.watch(opts.config.project.styles.bundled.watch, gulp.series(['dist-css-bundle' + opts.config.taskPostfix]));
 
-        if (opts.config.project.styles && opts.config.project.styles.fusion && opts.config.project.styles.fusion.watch)
+        if (opts.config.project && opts.config.project.styles && opts.config.project.styles.fusion && opts.config.project.styles.fusion.watch)
             gulp.watch(opts.config.project.styles.fusion.watch, gulp.series(['dist-css-fusion' + opts.config.taskPostfix, browserSyncReload]));
 
-        if (opts.config.project.styles && opts.config.project.styles.library && opts.config.project.styles.library.watch)
+        if (opts.config.project && opts.config.project.styles && opts.config.project.styles.library && opts.config.project.styles.library.watch)
             gulp.watch(opts.config.project.styles.library.watch, gulp.series(['dist-css-library' + opts.config.taskPostfix, browserSyncReload]));
 
-        if (opts.config.project.scripts && opts.config.project.scripts.bundled && opts.config.project.scripts.bundled.watch)
+        if (opts.config.project && opts.config.project.scripts && opts.config.project.scripts.bundled && opts.config.project.scripts.bundled.watch)
             gulp.watch(opts.config.project.scripts.bundled.watch, gulp.series(['dist-js-bundle' + opts.config.taskPostfix]));
 
-        if (opts.config.project.scripts && opts.config.project.scripts.fusion && opts.config.project.scripts.fusion.watch)
+        if (opts.config.project && opts.config.project.scripts && opts.config.project.scripts.fusion && opts.config.project.scripts.fusion.watch)
             gulp.watch(opts.config.project.scripts.fusion.watch, gulp.series(['dist-js-fusion' + opts.config.taskPostfix, browserSyncReload]));
 
-        if (opts.config.project.scripts && opts.config.project.scripts.library && opts.config.project.scripts.library.watch)
+        if (opts.config.project && opts.config.project.scripts && opts.config.project.scripts.library && opts.config.project.scripts.library.watch)
             gulp.watch(opts.config.project.scripts.library.watch, gulp.series(['dist-js-library' + opts.config.taskPostfix, browserSyncReload]));
 
-        if (opts.config.project.scripts && opts.config.project.scripts.serviceWorker && opts.config.project.scripts.serviceWorker.source)
+        if (opts.config.project && opts.config.project.scripts && opts.config.project.scripts.serviceWorker && opts.config.project.scripts.serviceWorker.source)
             gulp.watch(opts.config.project.scripts.serviceWorker.source, gulp.series(['dist-serviceworker' + opts.config.taskPostfix, browserSyncReload]));
 
-        if (opts.config.project.scripts && opts.config.project.scripts.lint && opts.config.project.scripts.lint.sources)
+        if (opts.config.project && opts.config.project.scripts && opts.config.project.scripts.lint && opts.config.project.scripts.lint.sources)
             gulp.watch(opts.config.project.scripts.lint.sources, gulp.series(['lint-js' + opts.config.taskPostfix]));
 
-        if (opts.config.project.styles && opts.config.project.styles.lint)
+        if (opts.config.project && opts.config.project.styles && opts.config.project.styles.lint)
             gulp.watch(opts.config.project.styles.lint, gulp.series(['lint-scss' + opts.config.taskPostfix]));
 
         if (opts.config.favicon && gulp.task('favicon-create-template' + opts.config.taskPostfix))

@@ -13,7 +13,7 @@ const path = require('path');
 const { addToTaskGroups, touchFusionFile, scssFileImporterFactory, transformResourceUrls } = require('../functions');
 
 module.exports = function (opts) {
-    if (!(opts.config.project.styles && opts.config.project.styles.fusion && opts.config.project.styles.fusion.sources)) {
+    if (!(opts.config.project && opts.config.project.styles && opts.config.project.styles.fusion && opts.config.project.styles.fusion.sources)) {
         return 'no-task';
     }
 

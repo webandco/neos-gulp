@@ -13,7 +13,7 @@ const stripCssComments = require('gulp-strip-css-comments');
 const { addToTaskGroups, scssFileImporterFactory } = require('../functions');
 
 module.exports = function (opts) {
-    if (!(opts.config.project.styles && opts.config.project.styles.library && opts.config.project.styles.library.sources)) {
+    if (!(opts.config.project && opts.config.project.styles && opts.config.project.styles.library && opts.config.project.styles.library.sources)) {
         return 'no-task';
     }
 

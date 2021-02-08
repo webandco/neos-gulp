@@ -24,5 +24,7 @@ module.exports = function (opts) {
         .map(task => task + opts.config.taskPostfix)
         .filter(task => gulp.task(task))
 
-    gulp.task('dist' + opts.config.taskPostfix, gulp.parallel(tasks));
+    if (tasks.length > 0) {
+        gulp.task('dist' + opts.config.taskPostfix, gulp.parallel(tasks));
+    }
 };

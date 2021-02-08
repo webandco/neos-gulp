@@ -5,7 +5,7 @@ const log = require('fancy-log');
 const colors = require('ansi-colors');
 
 module.exports = function (opts) {
-    if (!opts.config.project.copyFiles) {
+    if (!(opts.config.project && opts.config.project.copyFiles)) {
         return 'no-task';
     }
 

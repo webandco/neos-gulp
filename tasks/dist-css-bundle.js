@@ -15,7 +15,7 @@ const modifyFile = require('gulp-modify-file');
 const { addToTaskGroups, scssFileImporterFactory, transformResourceUrls } = require('../functions');
 
 module.exports = function (opts) {
-    if (!(opts.config.project.styles && opts.config.project.styles.bundled && opts.config.project.styles.bundled.sources)) {
+    if (!(opts.config.project && opts.config.project.styles && opts.config.project.styles.bundled && opts.config.project.styles.bundled.sources)) {
         return 'no-task';
     }
 

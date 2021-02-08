@@ -12,7 +12,7 @@ const modifyFile = require('gulp-modify-file');
 const { addToTaskGroups } = require('../functions');
 
 module.exports = function (opts) {
-    if (!(opts.config.project.scripts && opts.config.project.scripts.bundled && opts.config.project.scripts.bundled.sources)) {
+    if (!(opts.config.project && opts.config.project.scripts && opts.config.project.scripts.bundled && opts.config.project.scripts.bundled.sources)) {
         return 'no-task';
     }
 

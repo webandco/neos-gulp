@@ -9,7 +9,7 @@ const gulp = require('gulp');
 const maxBufferSize = 1024 * 1000;
 
 module.exports = function ({config, groupedTasks}) {
-    if (!(config.project.styles && config.project.styles.lint)) {
+    if (!(config.project && config.project.styles && config.project.styles.lint)) {
         return 'no-task';
     }
     addToTaskGroups(groupedTasks, 'lint-scss', config.taskPostfix);

@@ -15,7 +15,7 @@ const path = require('path');
 const fs = require('fs');
 
 module.exports = function (opts) {
-    if (!(opts.config.project.scripts && opts.config.project.scripts.fusion && opts.config.project.scripts.fusion.sources)) {
+    if (!(opts.config.project && opts.config.project.scripts && opts.config.project.scripts.fusion && opts.config.project.scripts.fusion.sources)) {
         return 'no-task';
     }
 

@@ -9,7 +9,7 @@ const path = require('path');
 const { addToTaskGroups } = require('../functions');
 
 module.exports = function (opts) {
-    if (!(opts.config.project.scripts && opts.config.project.scripts.library && opts.config.project.scripts.library.sources)) {
+    if (!(opts.config.project && opts.config.project.scripts && opts.config.project.scripts.library && opts.config.project.scripts.library.sources)) {
         return 'no-task';
     }
 

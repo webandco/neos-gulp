@@ -5,6 +5,9 @@ const log = require('fancy-log');
 const clean = require('gulp-clean');
 
 module.exports = function (opts) {
+    if (!(opts.config.paths && opts.config.paths.dist && opts.config.paths.dist.scripts)) {
+        return 'no-task';
+    }
 
     gulp.task('clean-js' + opts.config.taskPostfix, function () {
         log('Clean-JS:' + opts.config.projectName);
