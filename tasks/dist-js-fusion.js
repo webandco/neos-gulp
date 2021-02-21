@@ -26,6 +26,10 @@ module.exports = function (opts) {
         return gulp.src(opts.config.project.scripts.fusion.sources)
             .pipe(gulpif(opts.config.project.scripts.options.sourceMaps, sourceMaps.init()))
             .pipe(modifyFile((content, filePath, file) => {
+                if (content.indexOf('* @Gulp\\DISABLE_CLASSNAME') > -1) {
+                    return content;
+                }
+
                 let className = content.match(/(?<!\/\/\s)const\sclassName\s?=\s?("|')([0-9A-Za-z-]+)("|');/);
                 if (!className) {
                     const dirname = path.dirname(filePath);
