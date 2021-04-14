@@ -12,6 +12,8 @@ const stripCssComments = require('gulp-strip-css-comments');
 const fs = require('fs');
 const path = require('path');
 const modifyFile = require('gulp-modify-file');
+const postcss = require('gulp-postcss');
+const tailwindcss = require('tailwindcss');
 const { addToTaskGroups, scssFileImporterFactory, transformResourceUrls } = require('../functions');
 
 module.exports = function (opts) {
@@ -38,6 +40,9 @@ module.exports = function (opts) {
                 includePaths: includePaths,
                 importer: scssFileImporterFactory(opts.config)
             }).on('error', sass.logError))
+            .pipe(gulpif(!!opts.config.project.styles.bundled.tailwindConfig, postcss([
+                tailwindcss(opts.config.project.styles.bundled.tailwindConfig)
+            ])))
             .pipe(autoprefixer({
                 browsers: ['last 2 versions'],
                 cascade: false

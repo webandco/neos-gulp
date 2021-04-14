@@ -17,6 +17,7 @@ Webandco:
       project:
         styles:
           fusion:
+            tailwindConfig: 'PACKAGE_PATH/Private/tailwind.config.js'
             dependencies:
               - 'PACKAGE_PATH/Resources/Public/scss/fusion-dependencies.scss'
             includePaths:
@@ -28,6 +29,7 @@ Webandco:
 
           bundled:
             filename: 'webandco.min.css'
+            tailwindConfig: 'PACKAGE_PATH/Private/tailwind.config.js'
             sources:
               - 'PACKAGE_PATH/Resources/Public/scss/webandco.scss'
             includePaths:

@@ -10,6 +10,8 @@ const cleanCSS = require('gulp-clean-css');
 const stripCssComments = require('gulp-strip-css-comments');
 const modifyFile = require('gulp-modify-file');
 const path = require('path');
+const postcss = require('gulp-postcss');
+const tailwindcss = require('tailwindcss');
 const { addToTaskGroups, touchFusionFile, scssFileImporterFactory, transformResourceUrls } = require('../functions');
 
 module.exports = function (opts) {
@@ -42,6 +44,9 @@ module.exports = function (opts) {
                 includePaths: includePaths,
                 importer: scssFileImporterFactory(opts.config)
             }).on('error', sass.logError))
+            .pipe(gulpif(!!opts.config.project.styles.fusion.tailwindConfig, postcss([
+                tailwindcss(opts.config.project.styles.fusion.tailwindConfig)
+            ])))
             .pipe(autoprefixer({
                 browsers: ['last 2 versions'],
                 cascade: false
