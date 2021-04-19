@@ -3,6 +3,7 @@ const yaml = require('js-yaml');
 const fs = require('fs');
 const tap = require('gulp-tap');
 const path = require('path');
+const through = require('through2')
 
 function readYaml(path) {
     return yaml.safeLoad(fs.readFileSync(path));
@@ -107,6 +108,18 @@ function rimraf(dir_path) {
     }
 }
 
+function asyncModifyFile(fn) {
+    return through.obj(async function (file, enc, cb) {
+        const contents = await fn(String(file.contents), file.path, file)
+
+        if (file.isBuffer() === true) {
+            file.contents = Buffer.from(contents)
+        }
+
+        cb(null, file)
+    })
+}
+
 module.exports = {
     readYaml,
     replacePlaceholder,
@@ -114,5 +127,6 @@ module.exports = {
     touchFusionFile,
     scssFileImporterFactory,
     transformResourceUrls,
-    rimraf
+    rimraf,
+    asyncModifyFile
 };

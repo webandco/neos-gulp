@@ -68,6 +68,7 @@ packagePaths.forEach(packagePath => {
 
 const TASKS = [
     "dist-css-fusion",
+    "dist-css-tailwind-fusion",
     "dist-css-bundle",
     "dist-css-library",
     "dist-js-fusion",
